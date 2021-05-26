@@ -1,0 +1,39 @@
+%
+% LaTeX Thesis Control File
+%
+\documentclass [11pt, proquest]{uwthesis}[2014/11/13]
+
+%
+% Custom Packages and Commands
+%
+\usepackage{listings}
+\usepackage{xcolor}
+\newcommand\todo[1]{\textcolor{red}{*#1}}
+
+\begin{document}
+
+%
+% Preliminary Pages
+%
+\prelimpages
+\include{preliminary}
+
+%
+% Text Pages
+%
+\textpages
+\include{chapter01}
+
+%
+% Bibliography
+%
+\bibliographystyle{plain}
+\bibliography{thesis}
+
+%
+% Appendices
+%
+\appendix
+\include{appendixa}
+
+\end{document}
