@@ -356,4 +356,5 @@ MigrationBackup/
 *.fdb_latexmk
 *.log
 *.fls
+*.synctex.gz
 *.synctex(busy)
