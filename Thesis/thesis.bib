@@ -1,15 +1,97 @@
 Bibtex (bib) file for the thesis style document.
 
-@article{Preskill_2018,
-   title={Quantum Computing in the NISQ era and beyond},
-   volume={2},
-   ISSN={2521-327X},
-   url={http://dx.doi.org/10.22331/q-2018-08-06-79},
-   DOI={10.22331/q-2018-08-06-79},
-   journal={Quantum},
-   publisher={Verein zur Forderung des Open Access Publizierens in den Quantenwissenschaften},
-   author={Preskill, John},
+@article{BernsteinVazirani_1997,
+   issn={0097-5397},
+   abstract={In this paper we study quantum computation from a complexity theoretic viewpoint. Our first result is the existence of an efficient universal quantum Turing machine in Deutsch's model of a quantum Turing machine (QTM) [Proc. Roy. Soc. London Ser. A, 400 (1985), pp. 97--117]. This construction is substantially more complicated than the corresponding construction for classical Turing machines (TMs); in fact, even simple primitives such as looping, branching, and composition are not straightforward in the context of quantum Turing machines. We establish how these familiar primitives can be implemented and introduce some new, purely quantum mechanical primitives, such as changing the computational basis and carrying out an arbitrary unitary transformation of polynomially bounded dimension. We also consider the precision to which the transition amplitudes of a quantum Turing machine need to be specified. We prove that $O(\log T)$ bits of precision suffice to support a $T$ step computation. This justifies the claim that the quantum Turing machine model should be regarded as a discrete model of computation and not an analog one. We give the first formal evidence that quantum Turing machines violate the modern (complexity theoretic) formulation of the Church--Turing thesis. We show the existence of a problem, relative to an oracle, that can be solved in polynomial time on a quantum Turing machine, but requires superpolynomial time on a bounded-error probabilistic Turing machine, and thus not in the class $\BPP$. The class $\BQP$ of languages that are efficiently decidable (with small error-probability) on a quantum Turing machine satisfies $\BPP \subseteq \BQP \subseteq \Ptime^{\SP}$. Therefore, there is no possibility of giving a mathematical proof that quantum Turing machines are more powerful than classical probabilistic Turing machines (in the unrelativized setting) unless there is a major breakthrough in complexity theory.},
+   journal={SIAM journal on computing},
+   pages={1411--1473},
+   volume={26},
+   publisher={Society for Industrial and Applied Mathematics},
+   number={5},
+   year={1997},
+   title={Quantum complexity theory},
+   copyright={1997 INIST-CNRS},
+   language={eng},
+   address={Philadelphia, PA},
+   author={BERNSTEIN, E and VAZIRANI, U},
+   keywords={Applied sciences ; Algorithmics. Computability. Computer arithmetics ; Theoretical computing ; Exact sciences and technology ; Computer science; control theory; systems}
+}
+
+@article{ResourceEstimationFramework_Soeken_2021,
+   author={Soeken, Mathias and Mykhailova, Mariia and Kliuchnikov, Vadym and Granade, Christopher and Vaschillo, Alexander},
+   title={A Resource Estimation andVerification Workflow in Q\#},
+   journal= {Design, Automation and Test in Europe Conference},
+   year={2021},
+   url={http://msoeken.github.io/papers/2021_date.pdf}
+}
+
+@inproceedings{QSharp_Svore_2018,
+   author={Svore, Krysta and Geller, Alan and Troyer, Matthias and Azariah, John and Granade, Christopher and Heim, Bettina and Kliuchnikov, Vadym and Mykhailova, Mariia and Paz, Andres and Roetteler, Martin},
+   title={Q\#: Enabling Scalable Quantum Computing and Development with a High-Level DSL},
    year={2018},
-   month={Aug},
-   pages={79}
+   isbn={9781450363556},
+   publisher={Association for Computing Machinery},
+   address={New York, NY, USA},
+   url={https://doi.org/10.1145/3183895.3183901},
+   doi={10.1145/3183895.3183901},
+   abstract={Quantum computing exploits quantum phenomena such as superposition and entanglement to realize a form of parallelism that is not available to traditional computing. It offers the potential of significant computational speed-ups in quantum chemistry, materials science, cryptography, and machine learning.The dominant approach to programming quantum computers is to provide an existing high-level language with libraries that allow for the expression of quantum programs. This approach can permit computations that are meaningless in a quantum context; prohibits succint expression of interaction between classical and quantum logic; and does not provide important constructs that are required for quantum programming.We present Q#, a quantum-focused domain-specific language explicitly designed to correctly, clearly and completely express quantum algorithms. Q# provides a type system; a tightly constrained environment to safely interleave classical and quantum computations; specialized syntax; symbolic code manipulation to automatically generate correct transformations of quantum operations; and powerful functional constructs which aid composition.},
+   booktitle={Proceedings of the Real World Domain Specific Languages Workshop 2018},
+   articleno={7},
+   numpages={10},
+   keywords={quantum computing, domain specific language, functional programming},
+   location={Vienna, Austria},
+   series={RWDSL2018}
+}
+
+@software{Qiskit_2021,
+   author={
+      Matthew Treinish and
+      Jay Gambetta and
+      Paul Nation and
+      Paul Kassebaum and
+      qiskit-bot and
+      Diego M. Rodríguez and
+      Salvador de la Puente González and
+      Shaohan Hu and
+      Kevin Krsulich and
+      Laura Zdanski and
+      Jessie Yu and
+      David McKay and
+      Juan Gomez and
+      Lauren Capelluto and
+      Travis-S-IBM and
+      Julien Gacon and
+      Ashish Panigrahi and
+      lerongil and
+      Rafey Iqbal Rahman and
+      Steve Wood and
+      Luciano Bello and
+      Divyanshu Singh and
+      Drew and
+      Joachim Schwarm and
+      MELVIN GEORGE and
+      Manoel Marques and
+      Omar Costa Hamido and
+      RohitMidha23 and
+      Sean Dague and
+      Shelly Garion},
+   title={Qiskit/qiskit: Qiskit 0.26.2},
+   month=may,
+   year=2021,
+   publisher={Zenodo},
+   version={0.26.2},
+   doi={10.5281/zenodo.4774016},
+   url={https://doi.org/10.5281/zenodo.4774016}
+}
+
+@software{Cirq_2021,
+   author={Cirq Developers},
+   title={Cirq},
+   month=may,
+   year=2021,
+   note={{See full list of authors on Github: https://github.com/quantumlib/Cirq/graphs/contributors}},
+   publisher={Zenodo},
+   version={v0.11.0},
+   doi={10.5281/zenodo.4750446},
+   url={https://doi.org/10.5281/zenodo.4750446}
 }

@@ -1,0 +1,24 @@
+%
+% Chapter 3
+%
+\chapter {Resources Estimation Framework}
+
+The framework we use for resources estimation is very similar to the one proposed by Soeken et al.\cite{ResourceEstimationFramework_Soeken_2021}. The process is the following:
+\begin{enumerate}
+    \item Implement a quantum algorithm using a high-level programming language (Q\# in this case).
+    \item Verify the correctness of the implementation by executing the algorithm in a full state simulator.
+    \item Setup the simulator to estimate physical resources with the parameters that are specific to a hardware platform.
+    \item Analyze the results obtained from the resources estimator.
+\end{enumerate}
+
+\section{Resources Metrics}
+
+\todo{Describe the values obtained from the resources estimator (gate count, runtime, accumulated error), and how they are calculated.}
+
+\section{Gate Decomposition}
+
+\todo{Describe why logical-level gates have to be decomposed into physical-level gates.}
+
+\section{Limitations}
+
+\todo{Describe the limitations that this resources estimation has in regards to runtime (sum of the runtimes of individual gates rather than the critical path), and types of computations (trouble with mixed states).}

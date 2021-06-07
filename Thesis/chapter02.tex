@@ -1,0 +1,46 @@
+%
+% Chapter 2
+%
+\chapter {The Bernstein-Vazirani Algorithm}
+
+The Bernstein-Vazirani algorithm\cite{BernsteinVazirani_1997} is a quantum algorithm that finds a secret string $s \in \{0, 1\}^n$ given an oracle that implements a function $f:\{0, 1\}^n \rightarrow \{0, 1\}$ such that $f(x) = (x \cdot s)\; modulo\; 2$. The most efficient classical algorithm evaluates the function $n$ times to find $s$. In contrast, this quantum algorithm only needs to evaluate it once.
+
+\section{Algorithm}
+
+\todo{Mathematically describe the algorithm.}
+
+\section{Circuit Representation}
+
+\todo{Show the circuit representation of the algorithm.}
+
+\section{Q\# Implementation}
+
+The following code presents a simple implementation of the Bernstein-Vazirani algorithm in the Q\# programming language:
+
+\todo{Make the implementation more generic by receiving the oracle as on argument to the BernsteinVazirani operation.}
+
+\todo{Consider creating a Q\# language option for lstlisting.}
+
+\begin{lstlisting}[language=C]
+@EntryPoint()
+operation BernsteinVazirani () : Unit {
+    let secret = [One, Zero, One, One, Zero];
+    use (qubits, aux) = (Qubit[Length(secret)], Qubit()) {
+        X(aux);
+        H(aux);
+        ApplyToEach(H, qubits);
+
+        // Oracle.
+        for index in 0 .. Length(qubits) - 1 {
+            if (secret[index] == One){
+                CNOT(qubits[index], aux);
+            }
+        }
+
+        ApplyToEach(H, qubits);
+        let results = ForEach(M, qubits);
+        ResetAll(qubits);
+        Reset(aux);
+    }
+}
+\end{lstlisting}

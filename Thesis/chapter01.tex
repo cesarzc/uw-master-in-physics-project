@@ -3,16 +3,16 @@
 %
 \chapter {Introduction}
 
-\todo{Write something}
-
-Limitations on current NISQ%
-\footnote{See, for example, John Preskill\cite{Preskill_2018} for a recent discussion.}
-technology...
+Algorithms designed for quantum computers have the potential to solve some problems that cannot be efficiently solved by algorithms designed for classical computers. However, estimating how much resources are needed to execute a quantum algorithm that outperforms a classical one is a difficult task. There are many quantum programming languages and tools built around them such as Q\#\cite{QSharp_Svore_2018}, Qiskit\cite{Qiskit_2021} and Cirq\cite{Cirq_2021} that allow execution of quantum algorithms on simulators but out-of-the-box options to estimate resources are limited to the logical level or not existent.
 
 \section{The Purpose of This Thesis}
 
-This thesis...
+This thesis aims to perform resources estimation at the physical level for trapped-ion and superconducting quantum hardware platforms. To do this, we will extend the simulators infrastructure built around Q\# to calculate the maximum number of physical qubits, the total number of physical gates, and the maximum runtime required to execute a particular quantum algorithm. Additionally, the accumulated error for the computation, based on the fidelity of the physical gates, will also be calculated to provide more information about the feasibility of obtaining reliable results from specific hardware platforms.
 
-\section{Conventions and Notations}
+\todo{Consider using an open-system simulator to compare its results against the calculated accumulated error.}
 
-In this thesis...
+We chose the Bernstein-Vazirani algorithm to perform resources estimation on because it is simple and becasue the amount of resources it demands is proportional to the size of its input. This provides the opportunity to analyze how different hardware platforms scale.
+
+\section{Quantum Computing Basics}
+
+\todo{Provide an introduction to the basics of quantum computing. (Consider making this section a chapter)}

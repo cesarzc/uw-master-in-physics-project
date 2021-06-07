@@ -1,38 +1,8 @@
 %
 % Appendix A
 %
-\chapter{Bernstein-Vazirani Q\# Implementation}
- 
-The following code presents a simple implementation of the Bernstein-Vazirani algorithm in the Q\# programming language:
+\chapter{Implementation of Generic Physical Resources Estimation Framework}
 
-\begin{lstlisting}
-namespace Quantum.BernsteinVazirani {
+\todo{Add source code that implements the physical resources estimation framework.}
 
-    open Microsoft.Quantum.Arrays;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Intrinsic;
-
-    @EntryPoint()
-    operation BernsteinVazirani () : Unit {
-        Message("Bernstein-Vazirani");
-        let secret = [One, Zero, One, One, Zero];
-        use (qubits, aux) = (Qubit[Length(secret)], Qubit()) {
-            X(aux);
-            H(aux);
-            ApplyToEach(H, qubits);
-
-            // Oracle.
-            for index in 0 .. Length(qubits) - 1 {
-                if (secret[index] == One){
-                    CNOT(qubits[index], aux);
-                }
-            }
-
-            ApplyToEach(H, qubits);
-            let results = ForEach(M, qubits);
-            ResetAll(qubits);
-            Reset(aux);
-        }
-    }
-}
-\end{lstlisting}
+Source code can also be found in \href{https://github.com/cesarzc/qc-resources-estimation}{GitHub}.

@@ -17,6 +17,7 @@ This repository contains the work that I am doing for my [capstone project](http
 - General Quantum Computing
     - [Experimental Comparison of Two Quantum Computing Architectures](https://arxiv.org/abs/1702.01852)
     - [Quantum Computer Systems for Scientific Discovery](https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.017001)
+    - [Quantum Computing in the NISQ era and beyond](https://quantum-journal.org/papers/q-2018-08-06-79/pdf)
     - [Defining and detecting quantum speedup](https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.017001)
     - [Novel constructions for the fault-tolerant Toffoli gate](https://arxiv.org/abs/1212.5069)
     - [Quantum Circuits for Functionally Controlled NOT Gates](https://arxiv.org/abs/2005.12310)
