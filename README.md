@@ -14,6 +14,12 @@ This repository contains the work that I am doing for my [capstone project](http
     - [A Resource Estimation and Verification Workflow in Q#](http://msoeken.github.io/papers/2021_date.pdf)
     - [Enabling Accuracy-Aware Quantum Compilers using Symbolic Resource Estimation](https://arxiv.org/abs/2003.08408)
     - [The Role of Multiplicative Complexity in Compiling Low T-count Oracle Circuits](https://arxiv.org/pdf/1908.01609.pdf)
+- Quantum Error Correction
+    - [Quantum Error Correction for Beginners](https://arxiv.org/abs/0905.2794)
+    - [An Introduction to Quantum Error Correction and Fault-Tolerant Quantum Computation](https://arxiv.org/abs/0904.2557)
+    - [Stabilizer Codes and Quantum Error Correction](https://arxiv.org/abs/quant-ph/9705052)
+    - [Quantum Error Correction: An Introductory Guide](https://arxiv.org/abs/1907.11157)
+    - [A Tutorial on Quantum Error Correction](https://users.physics.ox.ac.uk/~Steane/pubs/Steane_2006.pdf)
 - General Quantum Computing
     - [Experimental Comparison of Two Quantum Computing Architectures](https://arxiv.org/abs/1702.01852)
     - [Quantum Computer Systems for Scientific Discovery](https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.017001)
