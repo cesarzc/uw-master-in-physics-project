@@ -5,6 +5,22 @@
 
 \section{Qubits}
 
+In classical computation and classical information, a bit is the fundamental building block.
+Analogously, in quantum computation and quantum information, a quantum bit or qubit is the fundamental building block.
+
+Mathematically, a qubit is a linear combination of states $\ket{\psi}=\alpha\ket{0}+\beta\ket{1}$ where $\alpha$ and $\beta$ are complex numbers known as amplitudes and $\ket{0}$ and $\ket{1}$ are the computational basis states.
+
+When a qubit is measured, the result is either $\ket{0}$ with probability $|\alpha|^2$ or $\ket{1}$ with probability $|\beta|^2$.
+Since the probabilities must sum to one, the qubit's state is normalized:
+$$|\alpha|^2+|\beta|^2=1$$
+
+The computational basis states form an orthonormal basis represented by the following vectors:
+$$\ket{0}=\left[\begin{array}{ccc}1 \\ 0\end{array}\right]$$
+$$\ket{1}=\left[\begin{array}{ccc}0 \\ 1\end{array}\right]$$
+
+Using the previous definitions, we can see a qubit as a unit vector in two-dimensional complex vector space:
+\[\ket{\psi}=\left[\begin{array}{ccc}\alpha \\ \beta\end{array}\right]\]
+
 \section{Quantum Gates}
 
 \todo{Include the following:}
