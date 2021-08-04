@@ -7,9 +7,22 @@ Algorithms designed for quantum computers have the potential to solve some probl
 
 \section{The Purpose of This Thesis}
 
-This thesis aims to perform resources estimation at the physical level for trapped-ion and superconducting quantum hardware platforms. To do this, we will extend the simulators infrastructure built around Q\# to calculate the maximum number of physical qubits, the total number of physical gates, and the maximum runtime required to execute a particular quantum algorithm. Additionally, the accumulated error for the computation, based on the fidelity of the physical gates, will also be calculated to provide more information about the feasibility of obtaining reliable results from specific hardware platforms.
+This thesis aims to perform resources estimation at the physical level for trapped-ion and superconducting quantum hardware platforms. To do this, we will extend the simulators infrastructure built around Q\# to calculate the maximum number of physical qubits, the total number of physical gates, and the maximum runtime required to execute a particular quantum algorithm. Additionally, the accumulated error for the computation, based on the fidelity of the physical gates, will also be calculated and analyzed to provide more information about the feasibility of obtaining reliable results from specific hardware platforms.
 
-\todo{Consider using an open-system simulator to compare its results against the calculated accumulated error.}
+\todo{Expand on the following structure of the thesis:}
+
+\begin{enumerate}
+    \item Implement an algorithm using fault-tolerant error-corrected gates.
+    \item For each hardware platform do the following:
+    \begin{enumerate}
+        \item Use an open-system simulator to analyze and optimize the effectiveness of fault-tolerant error-corrected gates.
+        \item Use a resource estimator to determine the maximum input size for the algorithm to run on a real NISQ device.
+        \item Use a resource estimator to determine the characteristics that a device should have to run the algorithm for a specific input size, and determine what would be the runtime.
+    \end{enumerate}
+    \item Compare the results for each hardware platform.
+\end{enumerate}
+
+\todo{Consider using an algotithm with more circuit depth to allow error correction to play a more important role.}
 
 We chose the Bernstein-Vazirani algorithm to perform resources estimation on because it is simple and becasue the amount of resources it demands is proportional to the size of its input. This provides the opportunity to analyze how different hardware platforms scale.
 

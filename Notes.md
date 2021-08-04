@@ -2,6 +2,10 @@
 
 This document is meant for taking raw notes about the project.
 
-- Consider using an algorithm with more circuit depth (e.g. Shor, Grover, Simon's) to allow error correction to play a more important role.
+## Project
+- [ ] Consider using an algorithm with more circuit depth (e.g. Shor, Grover, Simon's) to allow error correction to play a more important role.
+- [ ] The open-system simulator + resource estimation analysis could be done for just one platform in case the comparison is too much.
 
-## Questions
+## Document Work Items
+- [ ] Change the title to "Analysis of Quantum Computing Algorithm Execution in Multiple Physical Platforms"
+    - [ ] Change the text that has been already written considering this new title.

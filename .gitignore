@@ -358,3 +358,5 @@ MigrationBackup/
 *.fls
 *.synctex.gz
 *.synctex(busy)
+*.out
+*.toc
