@@ -1,43 +1,39 @@
 %
 % Chapter 5
 %
-\chapter {Trapped-Ions Hardware Platform}
+\chapter {Algorithm Execution Analysis Framework}
 
-\todo{Briefly this quantum computing platform.}
+\todo{Briefly describe each step in the process}
 
-\section{Native Gates and Platform Characteristics}
+\section{Open-System Simulator}
 
-\todo{Enumerate the native gates that this platform implements, its characteristics (fidelity, gate time), and how logical gates are implemented (using circuits to illustrate them).}
+\todo{Describe what is the purpose of using an open-system simulator and how it works.}
 
-\section{Resources Estimation Analysis}
+\section{Resources Estimation Strategy}
 
-\todo{Show (using tables and/or plots) how resources escalate as the size and pattern of the secret string change}.
+The strategy we use for resources estimation is very similar to the one proposed by Soeken et al.\cite{ResourceEstimationFramework_Soeken_2021}. The process is the following:
+\begin{enumerate}
+    \item Implement a quantum algorithm using a high-level programming language (Q\# in this case).
+    \item Verify the correctness of the implementation by executing the algorithm in a full state simulator.
+    \item Setup the simulator to estimate physical resources with the parameters that are specific to a hardware platform.
+    \item Analyze the results obtained from the resources estimator.
+\end{enumerate}
 
-Example of ouput of resources used by the Bernstein-Vazirani algorithm using a secret string of size 5:
-\begin{lstlisting}
-    Ion Platform Resource Estimation
-    Bernstein-Vazirani
-    PHYSICAL LAYER
-    Total Statistics
-    ----------------
-    Qubits: 6
-    Gate Count: 38
-    Time: 1175
-    Error: 0.3500000000000003
-    
-    Gate Statistics
-    ---------------
-    R:
-     - Count: 35
-     - Time: 470
-     - Error: 0.2300000000000002
-    
-    XX:
-     - Count: 3
-     - Time: 705
-     - Error: 0.1200000000000001
-\end{lstlisting}
+\todo{Explain the following}
+\begin{itemize}
+    \item Resources Metrics: Describe the values obtained from the resources estimator (gate count, runtime, accumulated error), and how they are calculated.
+    \item Gate Decomposition: Describe why logical-level gates have to be decomposed into physical-level gates.
+    \item Limitations: Describe the limitations that this resources estimation has in regards to runtime (sum of the runtimes of individual gates rather than the critical path), and types of computations (trouble with mixed states).
+\end{itemize}
 
-\section{Analysis of Execution Feasibility in NISQ Devices}
+\section{Extending Q\# Simulation Infrastructure for Estimation of Physical Resources}
 
-\todo{Analyze what would be the maximum size (and difficulty of pattern) of the secret string that can be used in a current NISQ device based on this platform.}
+Microsoft's Quantum Development Kit (QDK) supports the implementation of custom simulators that can be used to run Q\# programs. We leverage this capability and implement a simulator that calculates the resources a quantum algorithm would require to be executed in a hardware platform with specific characteristics.
+
+\todo{Explain the following}
+\begin{itemize}
+    \item QDK Custom Simulators: Describe how custom simulators are implemented using diagrams and code snippets.
+    \item Software Architecture of Physical Resources Estimator Simulator: Describe the software architecture using diagrams and code snippets.
+\end{itemize}
+
+Source code of a working version can be found in in \href{https://github.com/cesarzc/uw-master-in-physics-project}{GitHub}.
