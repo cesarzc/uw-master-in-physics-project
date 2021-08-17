@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Microsoft.Quantum.Simulation.Core;
+using Microsoft.Quantum.Simulation.Simulators;
+
 namespace IonPlatformResourceEstimation
 {
     class Driver
@@ -14,14 +17,19 @@ namespace IonPlatformResourceEstimation
         public static async Task Main(string[] args)
         {
             Console.WriteLine("Ion Platform Resource Estimation");
-            var simulator = new IonPlatformResourceEstimator(
+            var resourceEstimation = new IonPlatformResourceEstimator(
                 IonPhysicalRGateFidelity,
                 IonPhysicalRGateTime,
                 IonPhysicalXXGateFidelity,
                 IonPhysicalXXGateTime);
 
-            await BernsteinVazirani.Run(simulator);
-            simulator.PrintPhysicalLayerStats();
+            //await BernsteinVazirani.Run(resourceEstimation);
+            //resourceEstimation.PrintPhysicalLayerStats();
+
+            Console.WriteLine("Full State Simulator");
+            using var fullStateSimulator = new QuantumSimulator();
+            //await BernsteinVazirani.Run(fullStateSimulator);
+            await BernsteinVaziraniErrorCorrected.Run(fullStateSimulator);
         }
     }
 }
