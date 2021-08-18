@@ -30,7 +30,7 @@ $$\ket{\psi}^{\otimes n}=\ket{\psi}\otimes\cdots\otimes\ket{\psi}=\ket{\psi}\cdo
 
 \section{Quantum Systems}
 
-\todo{Describe what a quantum system is and basic postulates of quantum mechanics.}
+\todo{Explain the Schrodinger equation, describe what a quantum system is and mention basic postulates of quantum mechanics (similar to what Nielsen and Chuang explain).}
 
 \section{Qubits}
 
@@ -45,7 +45,7 @@ When a qubit is measured, the result is either $\ket{0}$ with probability $|\alp
 Since the probabilities must sum to one, the qubit's state is normalized:
 $$|\alpha|^2+|\beta|^2=1$$
 
-The computational basis states form an orthonormal basis represented by the following vectors:
+The computational basis states, which are analogous to the two values ($0$ and $1$) that a classical bit may take, form an orthonormal basis represented by the following vectors:
 $$\ket{0}=\left[\begin{array}{c}1 \\ 0\end{array}\right]$$
 $$\ket{1}=\left[\begin{array}{c}0 \\ 1\end{array}\right]$$
 
@@ -54,7 +54,10 @@ Using the previous definitions, we can see a qubit as a unit vector in two-dimen
 
 \section{Superposition}
 
-\todo{Explain the concept of superposition}
+The principle of quantum superposition states that the most general state of a quantum-mechanical system is a linear combination of all distinct valid quantum states. A qubit is an example of a quantum superposition of the basis states $\ket{0}$ and $\ket{1}$.
+
+A concrete example of a qubit in superposition that has the same probability of being measured as $\ket{0}$ or $\ket{1}$ is the following:
+$$\ket{\psi}=\frac{1}{\sqrt{2}}\left(\ket{0}+\ket{1}\right)$$
 
 \section{Single-Qubit Operations}
 
