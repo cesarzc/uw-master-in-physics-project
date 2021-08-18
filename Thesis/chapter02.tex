@@ -3,10 +3,41 @@
 %
 \chapter {Basics of Quantum Computing}
 
+\section{Dirac Notation}
+
+Also known as bra-ket notation, Dirac notation provides a convenient way of expressing the vectors used in quantum mechanics.
+
+Dirac notation defines two elements:
+
+\begin{itemize}
+    \item The \textit{ket} ($\ket{\psi}$), which denotes a column vector in a complex vector space that represents a quantum state.
+    $$\ket{\psi}=\left[\begin{array}{c}\psi_{1} \\ \psi_{2} \\ \cdots \\ \psi_{n} \end{array}\right]$$
+    \item The \textit{bra} ($\bra{\psi}$), which denotes a row vector that is the conjugate transpose, or adjoint, of a corresponding \textit{ket} ($\ket{v}$).
+    $$\bra{\psi}=\left[\begin{array}{cccc}\psi_{1}^{*} & \psi_{2}^{*} & \cdots & \psi_{n}^{*}\end{array}\right]=\left[\begin{array}{c}\psi_{1} \\ \psi_{2} \\ \cdots \\ \psi_{n} \end{array}\right]^{\dagger}$$
+\end{itemize}
+
+An \textit{operator} $\hat{A}$, represented by a $n \times n$ matrix, acting on a \textit{ket} $\ket{\psi}$ produces another \textit{ket} $\ket{\psi'}$ such that the produced \textit{ket} can be computed by matrix multiplication:
+$$\ket{\psi'}=\hat{A}\ket{\psi}=\left[\begin{array}{cc}A_{11} & A_{12} \\ A_{21} & A_{22}\end{array}\right]\left[\begin{array}{c}\psi_{1} \\ \psi_{2}\end{array}\right]=\left[\begin{array}{c}A_{11}\psi_{1}+A_{12}\psi_{2} \\ A_{21}\psi_{1}+A_{22}\psi_{2}\end{array}\right]$$
+
+The \textit{inner product} is denoted as a bra-ket pair $\braket{\phi}{\psi}$ and represents the probability amplitude that a quantum state $\psi$ would be subsequently found in state $\phi$:
+$$\braket{\phi}{\psi}=\left[\begin{array}{cc}\phi_{1}^{*} & \phi_{2}^{*} \end{array}\right]\left[\begin{array}{c}\psi_{1} \\ \psi_{2} \end{array}\right]=\phi_{1}^{*}\psi_{1}+\phi_{2}^{*}\psi_{2}$$
+
+This notation also provides a way to describe the state vector of $n$ uncorrelated quantum states, the \textit{tensor product}:
+$$\ket{\phi}\otimes\ket{\psi}=\ket{\phi}\ket{\psi}=\ket{\phi\psi}=\left[\begin{array}{c}\phi_{1} \\ \phi_{2}\end{array}\right]\otimes\left[\begin{array}{c}\psi_{1} \\ \psi_{2}\end{array}\right]=\left[\begin{array}{c}\phi_{1}\psi_{1} \\ \phi_{1}\psi_{2} \\ \phi_{2}\psi_{1} \\ \phi_{2}\psi_{2}\end{array}\right]$$
+
+Note that $\ket{\psi}^{\otimes n}$ represents the tensor product of $n$ $\ket{\psi}$ quantum states:
+$$\ket{\psi}^{\otimes n}=\ket{\psi}\otimes\cdots\otimes\ket{\psi}=\ket{\psi}\cdots\ket{\psi}=\ket{\psi\cdots\psi}=\left[\begin{array}{c}\psi_{1} \\ \psi_{2} \end{array}\right]\otimes\cdots\otimes\left[\begin{array}{c}\psi_{1} \\ \psi_{2} \end{array}\right]$$
+
+\section{Quantum Systems}
+
+\todo{Describe what a quantum system is and basic postulates of quantum mechanics.}
+
 \section{Qubits}
 
 In classical computation and classical information, a bit is the fundamental building block.
 Analogously, in quantum computation and quantum information, a quantum bit or qubit is the fundamental building block.
+
+Physically, a quibit is a two-level quantum-mechanical system. The polarization of a single photon and the spin of the electron are examples of such systems.
 
 Mathematically, a qubit is a linear combination of states $\ket{\psi}=\alpha\ket{0}+\beta\ket{1}$ where $\alpha$ and $\beta$ are complex numbers known as amplitudes and $\ket{0}$ and $\ket{1}$ are the computational basis states.
 
@@ -15,22 +46,30 @@ Since the probabilities must sum to one, the qubit's state is normalized:
 $$|\alpha|^2+|\beta|^2=1$$
 
 The computational basis states form an orthonormal basis represented by the following vectors:
-$$\ket{0}=\left[\begin{array}{ccc}1 \\ 0\end{array}\right]$$
-$$\ket{1}=\left[\begin{array}{ccc}0 \\ 1\end{array}\right]$$
+$$\ket{0}=\left[\begin{array}{c}1 \\ 0\end{array}\right]$$
+$$\ket{1}=\left[\begin{array}{c}0 \\ 1\end{array}\right]$$
 
 Using the previous definitions, we can see a qubit as a unit vector in two-dimensional complex vector space:
-\[\ket{\psi}=\left[\begin{array}{ccc}\alpha \\ \beta\end{array}\right]\]
+\[\ket{\psi}=\left[\begin{array}{c}\alpha \\ \beta\end{array}\right]\]
 
-\section{Quantum Gates}
+\section{Superposition}
 
-\todo{Include the following:}
+\todo{Explain the concept of superposition}
 
-\begin{itemize}
-    \item Single qubit gates
-    \item Muti qubit gates
-    \item Common gates
-\end{itemize}
+\section{Single-Qubit Operations}
+
+\todo{Explain how single-qubit gates work in detail and mention some of the most common ones.}
+
+\section{Multi-Qubit Systems}
 
 \section{Entanglement}
 
+\section{Multi-Qubit Operations}
+
+\section{Interference}
+
 \section{Measurement}
+
+\section{Quantum Advantage}
+
+\todo{Explain how quantum computers can solve a problem that a classical computer can't efficiently by exploiting superposition, entanglement, and interference.}
