@@ -20,6 +20,8 @@ This repository contains the work that I am doing for my [capstone project](http
     - [Stabilizer Codes and Quantum Error Correction](https://arxiv.org/abs/quant-ph/9705052)
     - [Quantum Error Correction: An Introductory Guide](https://arxiv.org/abs/1907.11157)
     - [A Tutorial on Quantum Error Correction](https://users.physics.ox.ac.uk/~Steane/pubs/Steane_2006.pdf)
+    - [Demonstration of Shor encoding on a trapped-ion quantum computer](https://arxiv.org/abs/2104.01205)
+    - [Logical-qubit operations in an error-detecting surface code](https://arxiv.org/abs/2102.13071)
 - General Quantum Computing
     - [Experimental Comparison of Two Quantum Computing Architectures](https://arxiv.org/abs/1702.01852)
     - [Quantum Computer Systems for Scientific Discovery](https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.017001)
