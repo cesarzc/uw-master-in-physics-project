@@ -1,47 +1,41 @@
 %
 % Chapter 4
 %
-\chapter {Quantum Algorithm (Bernestein-Vazirani)}
+\chapter {Quantum Algorithm (Semiprime Integer Factorization)}
 
-The Bernstein-Vazirani algorithm\cite{BernsteinVazirani_1997} is a quantum algorithm that finds a secret string $s \in \{0, 1\}^n$ given an oracle that implements a function $f:\{0, 1\}^n \rightarrow \{0, 1\}$ such that $f(x) = (x \cdot s)\; modulo\; 2$. The most efficient classical algorithm evaluates the function $n$ times to find $s$. In contrast, this quantum algorithm only needs to evaluate it once.
+Shor's algorithm is a polynomial-time quantum algorithm for semiprime integer factorization. In comparison, the time complexity of the most efficient known classical factoring algorithm is superpolynomial.
 
 \section{Algorithm}
 
-\todo{Mathematically describe the algorithm.}
+The problem that Shor's algorithm solves is the following: given a semiprime integer \textit{N}, find its two prime factor \textit{p} and \textit{q}.
 
-\section{Circuit Representation}
+\todo{Describe the algorithm.}
 
-\todo{Show the circuit representation of the algorithm.}
+\section{Quantum Subroutine}
+
+\todo{Show the circuit representation of the quantum subroutine.}
 
 \section{Q\# Implementation}
 
-The following code presents a simple implementation of the Bernstein-Vazirani algorithm in the Q\# programming language:
+The following Q\# code presents a top-level implementation of Shor's algorithm. It is a slight modification to the implementation found in Microsoft's quantum samples GitHub repository.
 
-\todo{Make the implementation more generic by receiving the oracle as on argument to the BernsteinVazirani operation.}
+\todo{Add reference to Microsoft's quantum samples repository.}
 
 \todo{Consider creating a Q\# language option for lstlisting.}
 
 \begin{lstlisting}[language=C]
 @EntryPoint()
-operation BernsteinVazirani () : Unit {
-    let secret = [One, Zero, One, One, Zero];
-    use (qubits, aux) = (Qubit[Length(secret)], Qubit()) {
-        X(aux);
-        H(aux);
-        ApplyToEach(H, qubits);
-
-        // Oracle.
-        for index in 0 .. Length(qubits) - 1 {
-            if (secret[index] == One){
-                CNOT(qubits[index], aux);
-            }
-        }
-
-        ApplyToEach(H, qubits);
-        let results = ForEach(M, qubits);
-        ResetAll(qubits);
-        Reset(aux);
-    }
+operation FactorSemiprimeInteger (N: Int) : (Int, Int) {
+    // TODO: Paste implementation.
 }
 \end{lstlisting}
 
+The following Q\# code presents a top-level implementation of the period-finding subroutine.
+
+\begin{lstlisting}[language=C]
+    @EntryPoint()
+    operation EstimatePeriod(N : Int, a : Int) : Int {
+        // TODO: Paste implementation.
+        return 0;
+    }
+\end{lstlisting}
