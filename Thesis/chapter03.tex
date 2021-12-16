@@ -3,16 +3,41 @@
 %
 \chapter {Basics of Quantum Error Correction}
 
-This chapter explains the basic concepts to understand how quantum computations can be performed reliably in the presence of noise.
+This chapter explains the basic concepts to understand how quantum computations can be performed reliably in the presence of noise. Given the fragility of coherent quantum systems, quantum error correction and fault-tolerant quantum computation are fundamental arbitrarily large quantum algorithms operating on many qubits.
 
 \section{Noise and Error Correction}
 
+Noise can introduce errors in data while it is being processed, sent through a channel and/or stored in a medium. A common error that can be introduced by noise is a bit flip (e.g. $0 \rightarrow 1$, $1 \rightarrow 0$). The task of error correction is to detect when an error has occurred and correct it.
+
+In classical error correction, coding based on data-copying is extensively used. The key idea is to protect data against the effects of noise by adding redundancy. For example, a classical repetition code can encode a logical bit using three physical bits:
+$$0 \rightarrow 000$$
+$$1 \rightarrow 111$$
+
+The problem is that classical error correction techniques cannot be directly applied to qubits because of the following reasons:
+\begin{itemize}
+    \item It is impossible to create an independent and identical copy of a qubit in an arbitrary unknown state. This is known as the no-cloning theorem of quantum mechanics and it has the consequence that qubits cannot be protected from errors by simply making multiple copies.
+    \todo{Find reference for the no-cloning theorem.}
+    \item Measurement destroys quantum information, implying that we cannot measure a qubit to decide which correcting action to perform.
+    \item In addition to bit flip errors ($\ket{\psi}=\alpha\ket{0}+\beta\ket{1} \rightarrow \ket{\psi}=\alpha\ket{1}+\beta\ket{0}$), qubits are also susceptible to phase flip errors ($\ket{\psi}=\alpha\ket{0}+\beta\ket{1} \rightarrow \ket{\psi}=\alpha\ket{0}-\beta\ket{1}$) that have no classical analogous. Therefore, quantum error correction must be able to simultaneously correct for both.
+    \item Errors in quantum information are continuous. This means that qubits, in the presence of noise, experience angular shifts rather than full bit or phase flips.
+\end{itemize}
+
 \section{Bit Flip Code}
+
+\todo{Describe and show how a bit flip code works.}
 
 \section{Phase Flip Code}
 
+\todo{Describe and show how a phase flip code works.}
+
 \section{Shor Code}
+
+\todo{Describe and show how the Shor code works and how it can completely correct a qubit from any type of errors.}
 
 \section{Fault-Tolerant Quantum Computation}
 
+\todo{Describe the concept of fault-tolerant quantum computation and how fault-tolerant quantum gates are constructed.}
+
 \section{Threshold Theorem}
+
+\todo{Explain the threshold theorem and why it is important.}
