@@ -3,39 +3,18 @@
 %
 \chapter {Analysis Framework}
 
-\section{Framework}
-
-\todo{This was originally placed in the Introduction.}
-
-\todo{Expand on the following structure of the thesis:}
-
-\begin{enumerate}
-    \item Implement an algorithm using fault-tolerant error-corrected gates.
-    \item For each hardware platform do the following:
-    \begin{enumerate}
-        \item Use an open-system simulator to analyze and optimize the effectiveness of fault-tolerant error-corrected gates.
-        \item Use a resource estimator to determine the maximum input size for the algorithm to run on a real NISQ device.
-        \item Use a resource estimator to determine the characteristics that a device should have to run the algorithm for a specific input size, and determine what would be the runtime.
-    \end{enumerate}
-    \item Compare the results for each hardware platform.
-\end{enumerate}
-
-\todo{Briefly describe each step in the process.}
-
-\todo{Include results of default resources estimator in this section or consider showing the results, explanation and analysys in a separate chapter (preferred).}
-
-\section{Open-System Simulator}
-
-\todo{Describe what is the purpose of using an open-system simulator and how it works.}
-
-\section{Resources Estimation Strategy}
-
-The strategy we use for resources estimation is very similar to the one proposed by Soeken et al.\cite{ResourceEstimationFramework_Soeken_2021}. The process is the following:
+The strategy we use to analyze this algorithm is very similar to the one proposed by Soeken et al.\cite{ResourceEstimationFramework_Soeken_2021}. The process is the following:
 \begin{enumerate}
     \item Implement a quantum algorithm using a high-level programming language (Q\# in this case).
     \item Verify the correctness of the implementation by executing the algorithm in a full state simulator.
-    \item Setup the simulator to estimate physical resources with the parameters that are specific to a hardware platform.
-    \item Analyze the results obtained from the resources estimator.
+    \item Use the built-in resources estimator to roughly calculate the amount of logical quantum gates used by the algorithm depending on the input size.
+    \item For each hardware platform do the following:
+    \begin{enumerate}
+        \item Create a resources estimator that uses hardware specific parameters to calculate the amount of physical qubits, physical gates, and runtime required to run the algorithm.
+        \item Analyze data produced by the resources estimator to determine the maximum input size for the algorithm to run on a real NISQ device.
+        \item Analyze data produced by the resources estimator to determine the characteristics that a device should have to run the algorithm for a specific input size, and determine what would be the runtime.
+    \end{enumerate}
+    \item Compare the results for each hardware platform.
 \end{enumerate}
 
 \todo{Explain the following}
