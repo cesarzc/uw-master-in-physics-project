@@ -9,42 +9,13 @@
 
 \todo{Enumerate the native gates that this platform implements, its characteristics (fidelity, gate time), and how logical gates are implemented (using circuits to illustrate them).}
 
-\section{Fault-tolerant analysis and optimization}
-
-\todo{Show the use of an open-system simulator to analyze and optimize the effectiveness of fault-tolerant error-corrected gates.}
-
 \section{Resources Estimation Analysis}
 
 \todo{Show (using tables and/or plots) how resources escalate as the size and pattern of the input changes}.
 
-Example of ouput of resources used by the Bernstein-Vazirani algorithm using a secret string of size 5:
-\begin{lstlisting}
-    Ion Platform Resource Estimation
-    Bernstein-Vazirani
-    PHYSICAL LAYER
-    Total Statistics
-    ----------------
-    Qubits: 6
-    Gate Count: 38
-    Time: 1175
-    Error: 0.3500000000000003
-    
-    Gate Statistics
-    ---------------
-    R:
-     - Count: 35
-     - Time: 470
-     - Error: 0.2300000000000002
-    
-    XX:
-     - Count: 3
-     - Time: 705
-     - Error: 0.1200000000000001
-\end{lstlisting}
-
 \section{Analysis of Execution in NISQ Devices}
 
-\todo{Analyze what would be the maximum size (and difficulty of pattern) of the secret string that can be used in a current NISQ device based on this platform.}
+\todo{Analyze what would be the maximum input size that can be successfully run on a NISQ device based on this platform.}
 
 \section{Analysis of Execution of Algorithm for Input of Specific Size}
 

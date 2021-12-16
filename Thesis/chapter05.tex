@@ -8,6 +8,7 @@ The strategy we use to analyze this algorithm is very similar to the one propose
     \item Implement a quantum algorithm using a high-level programming language (Q\# in this case).
     \item Verify the correctness of the implementation by executing the algorithm in a full state simulator.
     \item Use the built-in resources estimator to roughly calculate the amount of logical quantum gates used by the algorithm depending on the input size.
+    \todo{This part can be done in its own chapter and that chapter can explain in detail how the built-in resources estimator works and how to interpret the data that it produces.}
     \item For each hardware platform do the following:
     \begin{enumerate}
         \item Create a resources estimator that uses hardware specific parameters to calculate the amount of physical qubits, physical gates, and runtime required to run the algorithm.
