@@ -5,41 +5,97 @@
 
 Shor's algorithm is a polynomial-time quantum algorithm for semiprime integer factorization. In comparison, the time complexity of the most efficient known classical factoring algorithm is superpolynomial.
 
-We chose Shor's algorithm to because it is one of the most significant quantum algorithms, and because the number of qubits and the number of quantum operations required are proportional to the input size. The number of operations is particullarly relevant since it makes the errors introduced by the physical gates an important consideration.
+We chose Shor's algorithm because it is one of the most significant quantum algorithms, and because the number of qubits and the number of quantum operations required are proportional to the input size. The number of operations is particullarly relevant since it makes the errors introduced by the physical gates an important consideration.
 
 \section{Algorithm}
 
 The problem that Shor's algorithm solves is the following: given a semiprime integer \textit{N}, find its two prime factor \textit{p} and \textit{q}.
 
-\todo{Describe the algorithm.}
-
-\section{Quantum Subroutine}
-
-\todo{Show the circuit representation of the quantum subroutine.}
+Shor's algorithm combines both classical and quantum computations, and the procedure to perform it is the following:
+\begin{enumerate}
+    \item Pick a random integer $1 < a < N$.
+    \item Check whether $a$ is a factor by determining whether $a$ and $N$ are comprime. If they are, we can compute the factors. Otherwise continue with the rest of the algorithm.
+    \item Use a period-finding quantum subroutine to find the period $r$ of the function $f(x)=a^{x} \ mod \ N$.
+    \item If $r$ is odd, then go back to step 1. If $r$ is even, go to the next step.
+    \item If $a^{\frac{r}{2}} \equiv -1  \ mod \ N$, then go back to step 1.
+    \item Either $a^{\frac{r}{2}} - 1$ or $a^{\frac{r}{2}} + 1$ shares a factor with $N$.
+\end{enumerate}
 
 \section{Q\# Implementation}
 
-The following Q\# code presents a top-level implementation of Shor's algorithm. It is a slight modification to the implementation found in Microsoft's quantum samples GitHub repository.
+In order to take advantage of the tools built around Q\#, we use a modified implementation of Shor's algorithm found in Microsoft's quantum samples GitHub repository.
 
 \todo{Add reference to Microsoft's quantum samples repository.}
 
 \todo{Breakdown the implementation into different sections and describe each one (similar to what is done in the "Learn Quantum Computing with Python and Q\#" book).}
 
-\todo{Consider creating a Q\# language option for lstlisting.}
+The following Q\# code presents a top-level implementation of Shor's algorithm.
 
 \begin{lstlisting}[language=C]
 @EntryPoint()
-operation FactorSemiprimeInteger (N: Int) : (Int, Int) {
-    // TODO: Paste implementation.
+operation FactorSemiprimeInteger(N : Int) : (Int, Int) {
+
+    // Check the most trivial case where N is pair.
+    if (N % 2 == 0) {
+        return (2, N / 2);
+    }
+
+    mutable factors = (1, 1);
+    mutable foundFactors = false;
+    repeat {
+
+        // Start by guessing a coprime to N.
+        let coprimeGuess = DrawRandomInt(1, N - 1);
+
+        // If the guess number is a coprime, use a quantum algorithm for period finding.
+        // Otherwise, the GCD between N and the coprime guess number is one of the factors.
+        if (IsCoprimeI(N, coprimeGuess)) {
+            let period = EstimatePeriod(N, coprimeGuess);
+            set (foundFactors, factors) = CalculateFactorsFromPeriod(N, coprimeGuess, period);
+        } else {
+            let gcd = GreatestCommonDivisorI(N, coprimeGuess);
+            set (foundFactors, factors) = (true, (gcd, N / gcd));
+        }
+    }
+    until foundFactors
+
+    return factors;
 }
 \end{lstlisting}
 
-The following Q\# code presents a top-level implementation of the period-finding subroutine.
+\section{Quantum Subroutine}
+
+\todo{Show the circuit representation of the quantum subroutine.}
+
+The following Q\# code implements the period finding quantum subroutine:
 
 \begin{lstlisting}[language=C]
     @EntryPoint()
-    operation EstimatePeriod(N : Int, a : Int) : Int {
-        // TODO: Paste implementation.
-        return 0;
+    operation EstimatePeriodInstance(N : Int, a : Int) : (Bool, Int) {
+    
+        // Prepare eigenstate register.
+        let bitSize = BitSizeI(N);
+        use eigenstateRegister = Qubit[bitSize];
+        let eigenstateRegisterLE = LittleEndian(eigenstateRegister);
+        ApplyXorInPlace(1, eigenstateRegisterLE);
+    
+        // Prepare phase register.
+        let bitsPrecision =  2 * bitSize + 1;
+        use phaseRegister = Qubit[bitsPrecision];
+        let phaseRegisterLE = LittleEndian(phaseRegister);
+    
+        // Prepare oracle for quantum phase estimation.
+        let oracle = DiscreteOracle(ApplyOrderFindingOracle(N, a, _, _));
+    
+        // Execute quantum phase estimation.
+        QuantumPhaseEstimation(oracle, eigenstateRegisterLE!, LittleEndianAsBigEndian(phaseRegisterLE));
+    
+        let phaseEstimate = MeasureInteger(phaseRegisterLE);
+    
+        // Reset qubit registers 
+        ResetAll(eigenstateRegister);
+    
+        // Return period calculation based on estimated phase.
+        return CalculatePeriodFromPhaseEstimate(N, bitsPrecision, phaseEstimate);
     }
 \end{lstlisting}
