@@ -16,8 +16,8 @@ Dirac notation defines two elements:
     $$\bra{\psi}=\left[\begin{array}{cccc}\psi_{1}^{*} & \psi_{2}^{*} & \cdots & \psi_{n}^{*}\end{array}\right]=\left[\begin{array}{c}\psi_{1} \\ \psi_{2} \\ \cdots \\ \psi_{n} \end{array}\right]^{\dagger}$$
 \end{itemize}
 
-An \textit{operator} $\hat{A}$, represented by a $n \times n$ matrix, acting on a \textit{ket} $\ket{\psi}$ produces another \textit{ket} $\ket{\psi'}$ such that the produced \textit{ket} can be computed by matrix multiplication:
-$$\ket{\psi'}=\hat{A}\ket{\psi}=\left[\begin{array}{cc}A_{11} & A_{12} \\ A_{21} & A_{22}\end{array}\right]\left[\begin{array}{c}\psi_{1} \\ \psi_{2}\end{array}\right]=\left[\begin{array}{c}A_{11}\psi_{1}+A_{12}\psi_{2} \\ A_{21}\psi_{1}+A_{22}\psi_{2}\end{array}\right]$$
+An \textit{operator} $\bf{A}$, represented by a $n \times n$ matrix, acting on a \textit{ket} $\ket{\psi}$ produces another \textit{ket} $\ket{\psi'}$ such that the produced \textit{ket} can be computed by matrix multiplication:
+$$\ket{\psi'}=\textbf{A}\ket{\psi}=\left[\begin{array}{cc}A_{11} & A_{12} \\ A_{21} & A_{22}\end{array}\right]\left[\begin{array}{c}\psi_{1} \\ \psi_{2}\end{array}\right]=\left[\begin{array}{c}A_{11}\psi_{1}+A_{12}\psi_{2} \\ A_{21}\psi_{1}+A_{22}\psi_{2}\end{array}\right]$$
 
 The \textit{inner product} is denoted as a bra-ket pair $\braket{\phi}{\psi}$ and represents the probability amplitude that a quantum state $\psi$ would be subsequently found in state $\phi$:
 $$\braket{\phi}{\psi}=\left[\begin{array}{cc}\phi_{1}^{*} & \phi_{2}^{*} \end{array}\right]\left[\begin{array}{c}\psi_{1} \\ \psi_{2} \end{array}\right]=\phi_{1}^{*}\psi_{1}+\phi_{2}^{*}\psi_{2}$$
@@ -34,12 +34,12 @@ $$\ket{\psi}^{\otimes n}=\ket{\psi}\otimes\cdots\otimes\ket{\psi}=\ket{\psi}\cdo
 
 \section{Qubits}
 
-In classical computation and classical information, a bit is the fundamental building block.
-Analogously, in quantum computation and quantum information, a quantum bit or qubit is the fundamental building block.
+In classical information theory and classical computing, a bit is the fundamental building block.
+Analogously, in quantum information theory and quantum computing, a quantum bit or qubit is the fundamental building block.
 
 Physically, a quibit is a two-level quantum-mechanical system. The polarization of a single photon and the spin of the electron are examples of such systems.
 
-Mathematically, a qubit is a linear combination of states $\ket{\psi}=\alpha\ket{0}+\beta\ket{1}$ where $\alpha$ and $\beta$ are complex numbers known as amplitudes and $\ket{0}$ and $\ket{1}$ are the computational basis states.
+Mathematically, a qubit is a linear combination of states $\ket{\psi}=\alpha\ket{0}+\beta\ket{1}$ where $\alpha$ and $\beta$ are complex numbers known as amplitudes, and $\ket{0}$ and $\ket{1}$ are the computational basis states.
 
 When a qubit is measured, the result is either $\ket{0}$ with probability $|\alpha|^2$ or $\ket{1}$ with probability $|\beta|^2$.
 Since the probabilities must sum to one, the qubit's state is normalized:
@@ -52,6 +52,10 @@ $$\ket{1}=\left[\begin{array}{c}0 \\ 1\end{array}\right]$$
 Using the previous definitions, we can see a qubit as a unit vector in two-dimensional complex vector space:
 \[\ket{\psi}=\left[\begin{array}{c}\alpha \\ \beta\end{array}\right]\]
 
+\section{Multi-Qubit Systems}
+
+\todo{Explain how multi-qubit systems are represented. Describe what a state vector is.}
+
 \section{Superposition}
 
 The principle of quantum superposition states that the most general state of a quantum-mechanical system is a linear combination of all distinct valid quantum states. A qubit is an example of a quantum superposition of the basis states $\ket{0}$ and $\ket{1}$.
@@ -59,19 +63,50 @@ The principle of quantum superposition states that the most general state of a q
 A concrete example of a qubit in superposition that has the same probability of being measured as $\ket{0}$ or $\ket{1}$ is the following:
 $$\ket{\psi}=\frac{1}{\sqrt{2}}\left(\ket{0}+\ket{1}\right)$$
 
-\section{Single-Qubit Operations}
+\todo{Expand this section to show multi-qubit superposition.}
 
-\todo{Explain how single-qubit gates work in detail and mention some of the most common ones.}
+\section{Quantum Logic Gates}
 
-\section{Multi-Qubit Systems}
+In classical digital circuits, logic gates are the building blocks. Analogously, in the quantum circuit model of computation, quantum logic gates are the building blocks of quantum algorithms. Quantum gates act on qubits, transform them in different ways, and can be applied sequentially to perform complex quantum computations.
+
+Quantum gates are unitary operators represented as $2^n \times 2^n$ unitary matrices where $n$ is the number of qubits the gate operates on. Unitary matrices are complex square matrices $\bf{U}$ which have the property that its conjugate transpose or adjoint $\bf{U^{\dagger}}$ is also its inverse $\bf{U^{-1}}$:
+$$\bf{U^{\dagger}U}=\bf{UU^{\dagger}}=\bf{UU^{-1}}=I$$
+
+A quantum gate is applied to a qubit system by multiplying the gate's matrix representation by the qubits' state vector. This operation transforms the qubit system:
+$$\ket{\psi_1}=\bf{U}\ket{\psi_0}$$
+
+Applying a sequence of quantum gates is equivalent to performing a series of these multiplications. For example, applying gate $\bf{U_a}$ followed by a gate $\bf{U_b}$ to a state vector $\ket{\psi}$ is represented by the follwing expression where the gates closest to the state vector are applied first:
+$$\bf{U_b}\bf{U_a}\ket{\psi}$$
+
+Since matrix multiplication is associative, multiplying $\bf{U_a}$ by $\bf{U_b}$ produces a compund gate $\bf{U_{b}U_{a}}$ that is equivalent to applying $\bf{U_a}$ followed by $\bf{U_b}$:
+$$\bf{U_b}\bf{U_a}\ket{\psi}=\bf{U_b}(\bf{U_a}\ket{\psi})=(\bf{U_b}\bf{U_a})\ket{\psi}$$
+
+Note that all quantum gates are reversible since they are represented by unitary matrices. This means that for any gate, another gate exists that reverts the gate's transformation on a state vector:
+$$\ket{\psi}=\bf{U^{\dagger}}(\bf{U}\ket{\psi})=\bf{U^{\dagger}}\bf{U}\ket{\psi}=\bf{I}\ket{\psi}$$
+
+\todo{Describe and show how gates are represented in graphical circuits.}
+
+\section{Single-Qubit Gates}
+
+Single-qubit gates are represented by $2 \times 2$ matrices.
+
+\todo{List the most commonly used single-qubit gates and show how they transform a qubit.}
+
+\section{Multi-Qubit Gates}
+
+\todo{List the most commonly used multi-qubit gates and show how they transform the qubits they act upon.}
 
 \section{Entanglement}
 
-\section{Multi-Qubit Operations}
+\todo{Define what entanglement is, describe why it is important, and show how qubits are entangled.}
 
 \section{Interference}
 
+\todo{Define what interference is, describe why it is important, and show an example of interference.}
+
 \section{Measurement}
+
+\todo{Define what it means to measure a qubit or a qubit system and show examples of measurements using different basis.}
 
 \section{Quantum Advantage}
 
