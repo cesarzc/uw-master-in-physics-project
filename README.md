@@ -6,6 +6,8 @@ This repository contains the work that I am doing for my [capstone project](http
 ### Academic Papers
 - Trapped-Ion Quantum Computing Platform
     - [Trapped-Ion Quantum Computing: Progress and Challenges](https://arxiv.org/abs/1904.04178)
+    - [Complete 3-Qubit Grover Search on a Programmable Quantum Computer](https://arxiv.org/abs/1703.10535) (contains gate decompositions)
+    - [Benchmarking an 11-qubit quantum computer](https://www.nature.com/articles/s41467-019-13534-2.pdf) (contains information about native gates)
 - Superconducting Quantum Computing Platform
     - [Superconducting Qubits: Current State of Play](https://arxiv.org/abs/1905.13641)
     - [A quantum engineer's guide to superconducting qubits](https://aip-scitation-org.offcampus.lib.washington.edu/doi/full/10.1063/1.5089550)
