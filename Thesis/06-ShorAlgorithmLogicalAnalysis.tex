@@ -1,7 +1,87 @@
 %
-% Chapter 7
+% Chapter 6
 %
 \chapter {Shor's Algorithm Logical Analysis}
+
+\section{Q\# Implementation}
+
+In order to take advantage of the tools built around Q\#, we use a modified implementation of Shor's algorithm found in Microsoft's quantum samples GitHub repository.
+
+\todo{Add reference to Microsoft's quantum samples repository.}
+
+\todo{Breakdown the implementation into different sections and describe each one (similar to what is done in the "Learn Quantum Computing with Python and Q\#" book).}
+
+The following Q\# code presents a top-level implementation of Shor's algorithm.
+
+\begin{lstlisting}[language=C]
+@EntryPoint()
+operation FactorSemiprimeInteger(N : Int) : (Int, Int) {
+
+    // Check the most trivial case where N is pair.
+    if (N % 2 == 0) {
+        return (2, N / 2);
+    }
+
+    mutable factors = (1, 1);
+    mutable foundFactors = false;
+    repeat {
+
+        // Start by guessing a coprime to N.
+        let coprimeGuess = DrawRandomInt(1, N - 1);
+
+        // If the guess number is a coprime, use a quantum algorithm for period finding.
+        // Otherwise, the GCD between N and the coprime guess number is one of the factors.
+        if (IsCoprimeI(N, coprimeGuess)) {
+            let period = EstimatePeriod(N, coprimeGuess);
+            set (foundFactors, factors) = CalculateFactorsFromPeriod(N, coprimeGuess, period);
+        } else {
+            let gcd = GreatestCommonDivisorI(N, coprimeGuess);
+            set (foundFactors, factors) = (true, (gcd, N / gcd));
+        }
+    }
+    until foundFactors
+
+    return factors;
+}
+\end{lstlisting}
+
+\section{Quantum Subroutine}
+
+\todo{Show the circuit representation of the quantum subroutine.}
+
+The following Q\# code implements the period finding quantum subroutine:
+
+\begin{lstlisting}[language=C]
+    @EntryPoint()
+    operation EstimatePeriodInstance(N : Int, a : Int) : (Bool, Int) {
+    
+        // Prepare eigenstate register.
+        let bitSize = BitSizeI(N);
+        use eigenstateRegister = Qubit[bitSize];
+        let eigenstateRegisterLE = LittleEndian(eigenstateRegister);
+        ApplyXorInPlace(1, eigenstateRegisterLE);
+    
+        // Prepare phase register.
+        let bitsPrecision =  2 * bitSize + 1;
+        use phaseRegister = Qubit[bitsPrecision];
+        let phaseRegisterLE = LittleEndian(phaseRegister);
+    
+        // Prepare oracle for quantum phase estimation.
+        let oracle = DiscreteOracle(ApplyOrderFindingOracle(N, a, _, _));
+    
+        // Execute quantum phase estimation.
+        QuantumPhaseEstimation(oracle, eigenstateRegisterLE!, LittleEndianAsBigEndian(phaseRegisterLE));
+    
+        let phaseEstimate = MeasureInteger(phaseRegisterLE);
+    
+        // Reset qubit registers 
+        ResetAll(eigenstateRegister);
+    
+        // Return period calculation based on estimated phase.
+        return CalculatePeriodFromPhaseEstimate(N, bitsPrecision, phaseEstimate);
+    }
+\end{lstlisting}
+
 
 \todo{Explain the following}
 \begin{itemize}
