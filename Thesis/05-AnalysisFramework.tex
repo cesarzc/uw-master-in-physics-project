@@ -3,29 +3,27 @@
 %
 \chapter {Analysis Framework}
 
-The strategy we use to analyze this algorithm is very similar to the one proposed by Soeken et al.\cite{ResourceEstimationFramework_Soeken_2021}. The process is the following:
+The strategy we use to analyze Shor's integer factorization algorithm is very similar to the one proposed by Soeken et al.\cite{ResourceEstimationFramework_Soeken_2021}. The overview of the process is the following:
 \begin{enumerate}
-    \item Implement a quantum algorithm using a high-level programming language (Q\# in this case).
+    \item Implement the quantum algorithm using a high-level programming language.
     \item Verify the correctness of the implementation by executing the algorithm in a full state simulator.
-    \item Use the built-in resources estimator to roughly calculate the amount of logical quantum gates used by the algorithm depending on the input size.
-    \todo{This part can be done in its own chapter and that chapter can explain in detail how the built-in resources estimator works and how to interpret the data that it produces.}
-    \item For each hardware platform do the following:
+    \item Use, extend and build tools that can use the high-level algorithm implementation to estimate the amount of logical resources the algorithm requires depeding on its input size.
     \begin{enumerate}
-        \item Create a resources estimator that uses hardware specific parameters to calculate the amount of physical qubits, physical gates, and runtime required to run the algorithm.
-        \item Analyze data produced by the resources estimator to determine the maximum input size for the algorithm to run on a real NISQ device.
-        \item Analyze data produced by the resources estimator to determine the characteristics that a device should have to run the algorithm for a specific input size, and determine what would be the runtime.
+        \item As part of logical resources estimation, consider the effects of introducing error-corrected qubits and fault-tolerant quantum gates on the amount of required resources.
     \end{enumerate}
-    \item Compare the results for each hardware platform.
+    \item For each physical platform do the following:
+    \begin{enumerate}
+        \item Create a tool that uses platform specific parameters to calculate the amount of physical qubits, physical gates, and runtime required to run the algorithm.
+        \item Analyze the data produced by the tool to determine the following:
+        \begin{enumerate}
+            \item The maximum input size for the algorithm to run on a real NISQ device.
+            \item The characteristics that a device should have to run the algorithm for a specific input size, and determine what would be the runtime.
+        \end{enumerate}
+    \end{enumerate}
+    \item Compare the results obtained for each physical platform.
 \end{enumerate}
 
-\todo{Explain the following}
-\begin{itemize}
-    \item Resources Metrics: Describe the values obtained from the resources estimator (gate count, runtime, accumulated error), and how they are calculated.
-    \item Gate Decomposition: Describe why logical-level gates have to be decomposed into physical-level gates.
-    \item Limitations: Describe the limitations that this resources estimation has in regards to runtime (sum of the runtimes of individual gates rather than the critical path), and types of computations (trouble with mixed states).
-\end{itemize}
-
-\section{Extending Q\# Simulation Infrastructure for Estimation of Physical Resources}
+\section{Q\# and the Quantum Development Kit (QDK)}
 
 Microsoft's Quantum Development Kit (QDK) supports the implementation of custom simulators that can be used to run Q\# programs. We leverage this capability and implement a simulator that calculates the resources a quantum algorithm would require to be executed in a hardware platform with specific characteristics.
 
