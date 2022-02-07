@@ -7,8 +7,7 @@ namespace Shor {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Oracles;
     open Microsoft.Quantum.Random;
-    
-    @EntryPoint()
+
     operation FactorSemiprimeInteger(N : Int) : (Int, Int) {
         Message("Shor's integer factorization algorithm");
 
@@ -47,7 +46,6 @@ namespace Shor {
         return factors;
     }
 
-    @EntryPoint()
     operation EstimatePeriodInstance(N : Int, a : Int) : (Bool, Int) {
 
         // Prepare eigenstate register.

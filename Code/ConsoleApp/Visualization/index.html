@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Visualization of a quantum circuit">
+        <meta name="keywords" content="quantum">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quantum Circuit Visualization</title>
+        <script src="https://unpkg.com/@microsoft/quantum-viz.js"></script>
+        <script src="./circuit.js"></script>
+    </head>
+
+    <body>
+        <h1>Shor algorithm rendered by qviz:</h1>
+        <div id="shor"></div>
+        <script type = "text/javascript">
+            //document.getElementById('msg').style.display = 'none';
+            const shorDiv = document.getElementById('shor');
+            qviz.draw(shorCircuit, shorDiv, qviz.STYLES['Default']);
+         </script>
+    </body>
+</html>
