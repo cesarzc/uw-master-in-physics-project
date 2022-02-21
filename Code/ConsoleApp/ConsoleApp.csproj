@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\QuantumViz\QuantumViz.csproj" />
     <ProjectReference Include="..\Shor\Shor.csproj" />
+    <ProjectReference Include="..\Tracking\Tracking.csproj" />
   </ItemGroup>
 
   <ItemGroup>

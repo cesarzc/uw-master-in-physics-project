@@ -1,3 +1,6 @@
+// NOTICE: This source file comes from Microsoft's Quantum samples repository (https://github.com/Microsoft/Quantum)
+//          and was modified for the purposes of this project.
+
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
@@ -18,7 +21,7 @@ namespace Microsoft.Quantum.Simulation.Simulators
         public static new QCTraceSimulatorConfiguration RecommendedConfig() =>
             new QCTraceSimulatorConfiguration
             {
-                CallStackDepthLimit = 4,
+                CallStackDepthLimit = 5,
 
                 ThrowOnUnconstrainedMeasurement = false,
                 UseDistinctInputsChecker = false,

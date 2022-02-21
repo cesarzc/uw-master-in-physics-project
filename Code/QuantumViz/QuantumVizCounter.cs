@@ -1,3 +1,6 @@
+// NOTICE: This source file comes from Microsoft's Quantum samples repository (https://github.com/Microsoft/Quantum)
+//          and was modified for the purposes of this project.
+
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 

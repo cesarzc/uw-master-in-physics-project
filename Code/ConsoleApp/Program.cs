@@ -6,7 +6,9 @@ using System.Diagnostics;
 using System.IO;
 
 using Microsoft.Quantum.Simulation.Simulators;
+using Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators;
 
+using Tracking;
 using Shor;
 
 namespace ConsoleApp
@@ -52,11 +54,27 @@ namespace ConsoleApp
                 EstimateLogicalResources(options.N, options.Generator));
             rootCommand.Add(estimateLogicalResourcesCommand);
 
+            // Create QC trace command.
+            var qcTraceCommand = new Command("qctrace");
+            qcTraceCommand.AddOption(CommandOption.N);
+            qcTraceCommand.AddOption(CommandOption.Generator);
+            qcTraceCommand.Handler = CommandHandler.Create((QuantumSubroutineOptions options) =>
+                QcTrace(options.N, options.Generator));
+            rootCommand.Add(qcTraceCommand);
+
             // Create simulate command.
             var simulateCommand = new Command("simulate");
             simulateCommand.AddOption(CommandOption.N);
             simulateCommand.Handler = CommandHandler.Create((SimulateOptions options) => Simulate(options.N));
             rootCommand.Add(simulateCommand);
+
+            // Create track logical operations commnad.
+            var trackLogicalOperationsCommand = new Command("tracklogicalresources");
+            trackLogicalOperationsCommand.AddOption(CommandOption.N);
+            trackLogicalOperationsCommand.AddOption(CommandOption.Generator);
+            trackLogicalOperationsCommand.Handler = CommandHandler.Create((QuantumSubroutineOptions options) => 
+                TrackLogicalResources(options.N, options.Generator));
+            rootCommand.Add(trackLogicalOperationsCommand);
 
             // Create visualize command.
             var visualizeCommand = new Command("visualize");
@@ -81,12 +99,42 @@ namespace ConsoleApp
             Console.WriteLine(estimator.ToTSV());
         }
 
+        static void QcTrace(int N, int generator)
+        {
+            Console.WriteLine($"QC trace for estimate period with N={N} and generator={generator}...");
+            QCTraceSimulatorConfiguration tracerCoreConfiguration = new QCTraceSimulatorConfiguration();
+            tracerCoreConfiguration.ThrowOnUnconstrainedMeasurement = false;
+            tracerCoreConfiguration.UseDepthCounter = true;
+            tracerCoreConfiguration.UseWidthCounter = true;
+            var qcTraceSimulator = new QCTraceSimulator(tracerCoreConfiguration);
+            EstimatePeriodInstance.Run(qcTraceSimulator, N, generator).Wait();
+            var csv = qcTraceSimulator.ToCSV(format: "G");
+            var qcTraceStatsPath = Path.Combine(Directory.GetCurrentDirectory(), "Stats");
+            foreach (var item in csv)
+            {
+                var fileStream = File.CreateText(Path.Combine(qcTraceStatsPath, $"{item.Key}.csv"));
+                Console.WriteLine(item.Key);
+                var commaSeparated = item.Value.Replace("\t", ",");
+                fileStream.Write(commaSeparated);
+                fileStream.Flush();
+                fileStream.Close();
+            }
+        }
+
         static void Simulate(int N)
         {
             Console.WriteLine($"Factoring semiprime integer {N} using a full state simulator...");
             using QuantumSimulator sim = new QuantumSimulator();
             (long factor1, long factor2) = FactorSemiprimeInteger.Run(sim, N).Result;
             Console.WriteLine($"Factors are {factor1} and {factor2}");
+        }
+
+        static void TrackLogicalResources(int N, int generator)
+        {
+            Console.WriteLine($"Tracking logical resources for estimate period with N={N} and generator={generator}...");
+            LogicalTracker logicalTracker = new LogicalTracker();
+            EstimatePeriodInstance.Run(logicalTracker, N, generator).Wait();
+            logicalTracker.DisplayStats();
         }
 
         // TODO: Maybe take depth as a parameter too.
