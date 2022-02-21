@@ -37,6 +37,7 @@ This repository contains the work that I am doing for my [capstone project](http
     - [Quantum Algorithms for some Hidden Shift Problems](https://arxiv.org/abs/quant-ph/0211140)
 
 ### Quantum Simulators & Algorithms Execution
+- [Testing Quantum Programs using Q# and Microsoft Quantum Development Kit](http://ceur-ws.org/Vol-3008/short6.pdf)
 - Build your own Q# simulator
     - [Part 1](https://devblogs.microsoft.com/qsharp/build-your-own-q-simulator-part-1-a-simple-reversible-simulator/)
     - [Part 2](https://devblogs.microsoft.com/qsharp/build-your-own-q-simulator-part-2-advanced-features-for-the-reversible-simulator/)
