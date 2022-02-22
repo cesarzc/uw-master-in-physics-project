@@ -163,7 +163,7 @@ namespace ConsoleApp
             var flameGraphSvgFilePath = Path.Combine(flameGraphDirectoryPath, "FlameGraph.svg");
             var flameGraphScriptPath = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "flamegraph.pl");
-            var flameGraphScriptArgs = $"{flameGraphScriptPath} {flameGraphDataFilePath}".Replace("\\", "\\\\");
+            var flameGraphScriptArgs = $"{flameGraphScriptPath} {flameGraphDataFilePath}";
             var flameGraphScriptProcess = new System.Diagnostics.Process();
             flameGraphScriptProcess.StartInfo = new ProcessStartInfo("perl")
             { 
