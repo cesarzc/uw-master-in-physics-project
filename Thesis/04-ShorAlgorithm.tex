@@ -21,4 +21,13 @@ Shor's algorithm combines both classical and quantum computations, and the proce
     \item Either $a^{\frac{r}{2}} - 1$ or $a^{\frac{r}{2}} + 1$ shares a factor with $N$.
 \end{enumerate}
 
-\todo{Include circuit representation of the algorithm.}
+Figure \ref{fig:PeriodFindingQuantumSubroutine} shows the circuit that implements the quantum subroutine in Shor's algorithm. The quantum circuits $Ua^{2^k}$ used for this algorithm are custom designed for each value of $N$ and $a$.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=.15]{images/Shor-QuantumPeriodFinding.png}
+    \caption{Period finding quantum subroutine \cite{ShorQuantumSubroutineImage}}
+    \label{fig:PeriodFindingQuantumSubroutine}
+\end{figure}
+
+Stephane Beauregard\cite{CircuitForShorAlgorithm_2003} provides a detailed description on how the $Ua^{2^k}$ quantum circuits are built.
