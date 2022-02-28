@@ -23,18 +23,45 @@ The strategy we use to analyze Shor's integer factorization algorithm is very si
     \item Compare the results obtained for each physical platform.
 \end{enumerate}
 
-\section{Quantum Computing Architecture}
+\section{Layered Architecture for Quantum Computing}
 
-\todo{Explain the layered architecture for quantum computing model}
+As a basis for the analysis, we will use a layered architecture model like the one proposed by N. Cody Jones et al.\cite{LayeredArchitectureForQuantum_2012}. Figure \ref{fig:LayeredArchitectureForQuantum} shows the five different layers of the architecture.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=.35]{images/Framework-LayeredArchitecture.png}
+    \caption{Layered architecture for quantum computing \cite{LayeredArchitectureForQuantum_2012}}
+    \label{fig:LayeredArchitectureForQuantum}
+\end{figure}
+
+Briefly describing each layer:
+\begin{enumerate}
+    \item Physical: Consists of the physical qubits and the apparatus needed to manipulate them. At this layer, the gates that are native to the physical platform are the ones used for qubit manipulation.
+    \item Virtual: Provides the interface to interact with the hardware such that the specifics of controlling it are abstracted away.
+    \item Quantum error correction: Implements logical qubit encoding and fault-tolerant operations.
+    \item Logical: Tools that allow the development of quantum algorithms at a higher level of abstraction. This layer exposes higher level gates that are decomposed into fault-tolerant sequences of native gates. Programming languages, frameworks and compilers belong to this layer.
+    \item Application: Quantum algorithms like Shor's or Grover's implemented on top of the logical layer.
+\end{enumerate}
+
+The main advatage of a layered architecture like this one is modularity. Since each layer encapsulates its functionalities, the internal implementation of each layer can be changed as requirements and technology evolve. For example, the quantum error correcting code in the third layer can be changed depending on what works best for a specific physical platform.
 
 \section{Q\# and the Quantum Development Kit (QDK)}
 
-Microsoft's Quantum Development Kit (QDK) supports the implementation of custom simulators that can be used to run Q\# programs. We leverage this capability and implement a simulator that calculates the resources a quantum algorithm would require to be executed in a hardware platform with specific characteristics.
+Microsoft's Quantum Development Kit (QDK)\cite{MicrosoftQuantumDevelopmentKit} is a set of tools for quantum application development. It includes Q\#, a high-level programming language, different quantum simulators and libraries that are useful for development and verification of quantum algorithms.
 
-\todo{Explain the following}
+Quantum simulators are software programs that run on classical computers and act as the target machine for a Q\# program, making it possible to run and test quantum programs in an environment that handles qubits and operations that act on them\cite{QDKSimulators}. Each type of quantum simulator can provide different implementations of quantum primitive operations such as Hadamard, Pauli-X, Pauli-Y, Pauli-Z and CNOT. The ones we take advatage of are:
 \begin{itemize}
-    \item QDK Custom Simulators: Describe how custom simulators are implemented using diagrams and code snippets.
-    \item Software Architecture of Physical Resources Estimator Simulator: Describe the software architecture using diagrams and code snippets.
+    \item Full-state simulator: Runs quantum algorithms by tracking the full quantum state vector. It is limited to ~30 qubits.
+    \item Resources estimator: Performs a top level analysis of the resources needed to run a quantum algorithm.
+    \item Trace-based resource estimator: Runs advanced analysis of resources consumptions for the algorithm's entire call-graph.
 \end{itemize}
 
-Source code of a working version can be found in in \href{https://github.com/cesarzc/uw-master-in-physics-project}{GitHub}.
+Using Q\# and the QDK allows the algorithm implementation to remain constant even when the way it is executed changes, which is incredibly useful to verify the correctness of the implementation and to have confidence on the results it yields.
+
+Additionally, the QDK supports the implementation of custom simulators that can be used to run Q\# programs. We leverage this capability and implement custom simulators that make calculations based on additional parameters.
+
+\section{Command line application for verification and resources estimation}
+
+In order to facilitate the verification of the correctness of the algorithm implementation and the calculation of resources making different assumptions, we developed a command line application that integrates the quantum algorithm implementation with both out-of-the-box QDK simulators and custom simulators. This way we can do the analysis from a single place.
+
+Source code of a working version can be found in \href{https://github.com/cesarzc/uw-master-in-physics-project}{GitHub}.
