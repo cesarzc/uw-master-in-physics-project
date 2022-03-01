@@ -5,16 +5,11 @@
 
 \section{Q\# Implementation}
 
-In order to take advantage of the tools built around Q\#, we use a modified implementation of Shor's algorithm found in Microsoft's quantum samples GitHub repository.
+In order to take advantage of the tools built around Q\#, we use a modified implementation of Shor's algorithm found in Microsoft's quantum samples GitHub repository\cite{MicrosoftQDKSamples}.
 
-\todo{Add reference to Microsoft's quantum samples repository.}
+The $FactorSemiprimeInteger$ (\ref{lst:FactorSemiprimeInteger}) operation represents the top-level implementation of Shor's algorithm. The main part of the algorithm is within a cycle because it depends on the coprime guess whether the prime factors can be found. The $EstimatePeriod$ operation is the one that contains the quantum logic, before and after it some classical computation is done.
 
-\todo{Breakdown the implementation into different sections and describe each one (similar to what is done in the "Learn Quantum Computing with Python and Q\#" book).}
-
-The following Q\# code presents a top-level implementation of Shor's algorithm.
-
-\begin{lstlisting}[language=C]
-@EntryPoint()
+\begin{lstlisting}[language=qsharp,label=lst:FactorSemiprimeInteger,caption={Top level implementation of Shor's algorithm in Q\#}]
 operation FactorSemiprimeInteger(N : Int) : (Int, Int) {
 
     // Check the most trivial case where N is pair.
@@ -24,6 +19,8 @@ operation FactorSemiprimeInteger(N : Int) : (Int, Int) {
 
     mutable factors = (1, 1);
     mutable foundFactors = false;
+
+    // Keep trying until we find the factors.
     repeat {
 
         // Start by guessing a coprime to N.
@@ -45,47 +42,109 @@ operation FactorSemiprimeInteger(N : Int) : (Int, Int) {
 }
 \end{lstlisting}
 
-\section{Quantum Subroutine}
+The $EstimatePeriod$ (\ref{lst:EstimatePeriod}) operation implements a cycle that performs quantum period estimation until a viable period is found.
 
-\todo{Show the circuit representation of the quantum subroutine.}
-
-The following Q\# code implements the period finding quantum subroutine:
-
-\begin{lstlisting}[language=C]
-    @EntryPoint()
-    operation EstimatePeriodInstance(N : Int, a : Int) : (Bool, Int) {
-    
-        // Prepare eigenstate register.
-        let bitSize = BitSizeI(N);
-        use eigenstateRegister = Qubit[bitSize];
-        let eigenstateRegisterLE = LittleEndian(eigenstateRegister);
-        ApplyXorInPlace(1, eigenstateRegisterLE);
-    
-        // Prepare phase register.
-        let bitsPrecision =  2 * bitSize + 1;
-        use phaseRegister = Qubit[bitsPrecision];
-        let phaseRegisterLE = LittleEndian(phaseRegister);
-    
-        // Prepare oracle for quantum phase estimation.
-        let oracle = DiscreteOracle(ApplyOrderFindingOracle(N, a, _, _));
-    
-        // Execute quantum phase estimation.
-        QuantumPhaseEstimation(oracle, eigenstateRegisterLE!, LittleEndianAsBigEndian(phaseRegisterLE));
-    
-        let phaseEstimate = MeasureInteger(phaseRegisterLE);
-    
-        // Reset qubit registers 
-        ResetAll(eigenstateRegister);
-    
-        // Return period calculation based on estimated phase.
-        return CalculatePeriodFromPhaseEstimate(N, bitsPrecision, phaseEstimate);
+\begin{lstlisting}[language=qsharp,label=lst:EstimatePeriod,caption={Q\# implementation of the EstimatePeriod operation}]
+operation EstimatePeriod(N : Int, a : Int) : Int {
+    mutable period = 1;
+    repeat {
+        let (instanceSucceeded, instancePeriod) = EstimatePeriodInstance(N, a);
+        if (instanceSucceeded) {
+            set period = instancePeriod;
+        }
     }
+    until (ExpModI(a, period, N) == 1)
+    fixup {
+        Message("Period estimate failed.");
+    }
+    return period;
+}
 \end{lstlisting}
 
+The $EstimatePeriodInstance$ (\ref{lst:EstimatePeriodInstance}) operation is the one that actually runs on a quantum device. It allocates all the qubits that will be needed to calculate the period depeding on the number of bits that are needed to represent the integer to factor. It then uses an oracle that implements the function $\ket{x} \rightarrow \ket{(a^k x) mod N}$.
 
-\todo{Explain the following}
+\begin{lstlisting}[language=qsharp,label=lst:EstimatePeriodInstance,caption={Q\# implementation of the EstimatePeriodInstance operation}]
+operation EstimatePeriodInstance(N : Int, a : Int) : (Bool, Int) {
+
+    // Prepare eigenstate register.
+    let bitSize = BitSizeI(N);
+    use eigenstateRegister = Qubit[bitSize];
+    let eigenstateRegisterLE = LittleEndian(eigenstateRegister);
+    ApplyXorInPlace(1, eigenstateRegisterLE);
+
+    // Prepare phase register.
+    let bitsPrecision =  2 * bitSize + 1;
+    use phaseRegister = Qubit[bitsPrecision];
+    let phaseRegisterLE = LittleEndian(phaseRegister);
+
+    // Prepare oracle for quantum phase estimation.
+    let oracle = DiscreteOracle(ApplyOrderFindingOracle(N, a, _, _));
+
+    // Execute quantum phase estimation.
+    QuantumPhaseEstimation(oracle, eigenstateRegisterLE!, LittleEndianAsBigEndian(phaseRegisterLE));
+    let phaseEstimate = MeasureInteger(phaseRegisterLE);
+
+    // Reset qubit registers 
+    ResetAll(eigenstateRegister);
+
+    // Return period calculation based on estimated phase.
+    return CalculatePeriodFromPhaseEstimate(N, bitsPrecision, phaseEstimate);
+}
+\end{lstlisting}
+
+The $ApplyOrderFindingOracle$ (\ref{lst:ApplyOrderFindingOracle}) operation is the one that implements and applies the oracle function to the target register.
+
+\begin{lstlisting}[language=qsharp,label=lst:ApplyOrderFindingOracle,caption={Q\# implementation of the ApplyOrderFindingOracle operation}]
+operation ApplyOrderFindingOracle(
+    N : Int, a : Int, power : Int, target : Qubit[])
+: Unit is Adj + Ctl {
+    MultiplyByModularInteger(ExpModI(a, power, N), N, LittleEndian(target));
+}
+\end{lstlisting}
+
+\section{Logical Resources Estimation}
+
+One of the smallest semiprime integers to factor is $15$. The number of qubits and unitary operations needed to factor this number using Shor's algorithm is small enough that we can simulate it using the full state simulator. Running a simulation through the console application we built yields the result in listing \ref{lst:SimulationOutput}. The important thing to note here is that $4$ is used as coprime guess $a$, which is what we are going to use to estimate quantum logical resources for this particular execution.
+\begin{lstlisting}[label=lst:SimulationOutput,caption={Output of simulating Shor's algorithm on a full-state simulator}]
+> dotnet run -- simulate -N 15
+Console App
+Factoring semiprime integer 15 using a full state simulator...
+Shor's integer factorization algorithm
+Starting cycle 1 using 4 as a coprime guess...
+Estimating period using a quantum algorithm...
+Starting estimate period cycle 1
+Estimated phase: 256
+Estimated period: 2
+Simulation ended
+Factors are 5 and 3
+\end{lstlisting}
+
+In order to estimate resources, we have to provide both the integer to factor $N$ and a coprime guess $a$ to the console application $estimatelogicalresources$ command as shown in listing .
+\begin{lstlisting}[label=lst:EstimateLogicalResourcesOutput,caption={Output of estimating logical resources for Shor's algorithm}]
+> dotnet run -- estimatelogicalresources -N 15 --generator 4
+Metric          Sum     Max
+CNOT            49610   49610
+QubitClifford   11675   11675
+R               4041    4041
+Measure         13      13
+T               31137   31137
+Depth           20897   20897
+Width           21      21
+QubitCount      21      21
+BorrowedWidth   0       0
+\end{lstlisting}
+
+The meaning of the reported metrics is the following:
 \begin{itemize}
-    \item Resources Metrics: Describe the values obtained from the resources estimator (gate count, runtime, accumulated error), and how they are calculated.
-    \item Gate Decomposition: Describe why logical-level gates have to be decomposed into physical-level gates.
-    \item Limitations: Describe the limitations that this resources estimation has in regards to runtime (sum of the runtimes of individual gates rather than the critical path), and types of computations (trouble with mixed states).
+    \item CNOT: The run count of CNOT operations (also known as Controlled Pauli X operations).
+    \item QubitClifford: The run count of any single qubit Clifford and Pauli operations.
+    \item Measure: The run count of any measurements.
+    \item R: The run count of any single-qubit rotations, excluding T, Clifford and Pauli operations.
+    \item T: The run count of T operations and their conjugates, including the T operations, $T_x = H.T.H$, and $T_y = Hy.T.Hy$.
+    \item Depth: Depth of the quantum circuit run by the Q\# operation. By default, the depth metric only counts T gates.
+    \item Width: Width of the quantum circuit run by the Q\# operation.
+    \item QubitCount: The lower bound for the maximum number of qubits allocated during the run of the Q\# operation.
+    \item BorrowedWidth: The maximum number of qubits borrowed inside the Q\# operation.
 \end{itemize}
+
+One of the main limitiations of using this approach to calculate resources is that qubit measurements yield each one of the computational basis states $\ket{0}$ and $\ket{1}$ with $50\%$ probability.

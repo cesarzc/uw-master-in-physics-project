@@ -22,6 +22,19 @@
 \newcommand\bra[1]{\left\langle{#1}\right|}
 \newcommand\braket[2]{\left\langle{#1}|{#2}\right\rangle}
 
+\lstdefinelanguage{qsharp}
+{morekeywords={operation, return, use, mutable, repeat, until, fixup, if, else, let, set, false, true, is},
+keywordstyle=\color{blue}\bfseries,
+ndkeywords={Bool, Int, Qubit, Unit, Adj, Ctl},
+ndkeywordstyle=\color{black}\bfseries,
+identifierstyle=\color{black},
+stringstyle=\color{orange},
+sensitive=false,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+commentstyle=\color{magenta}\ttfamily,
+morestring=[b]"}
+
 %
 % Document Composition
 %
