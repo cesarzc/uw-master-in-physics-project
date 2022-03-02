@@ -30,11 +30,7 @@ $$\ket{\psi}^{\otimes n}=\ket{\psi}\otimes\cdots\otimes\ket{\psi}=\ket{\psi}\cdo
 
 \section{Quantum Systems}
 
-\todo{Explain the Schrodinger equation, describe what a quantum system is and mention basic postulates of quantum mechanics (similar to what Nielsen and Chuang explain).}
-
-\todo{Add an introduction before explaining the postulates of quantum mechanics and extend the description of the postulates.}
-
-\todo{Reference Nielsen \& Chuang's book since this section comes from that book.}
+Quantum mechanics is a mathematical framework for the development of physical theories\cite{NielsenChuang_2012}. On its own quantum mechanics doesn't tell you what laws a physical system must obey, but it does provide a mathematical and conceptual framework for the development of such laws. The postulates described next provide a connection between the physical world and the mathematical formalism of quantum mechanics.
 
 Postulate 1: The state of an isolated physical system is fully described by a unit vector $\ket{\psi}$ in Hilbert space.
 
@@ -42,13 +38,9 @@ Postulate 2: The evolution of a closed quantum system is described by a unitary 
 
 $$\ket{\psi'}=U(t_1,t_2)\ket{\psi}$$
 
-\todo{Include Schrodinger's equation here (Postulate 2').}
-
 Postulate 3: The state space of a composite physical system is the tensor product of the state spaces of the component physical systems.
 
 Postulate 4: Quantum measurements are described by a collection of ${M_m}$ of measurement operators.
-
-\todo{This is a good place to introduce the concept of coherence.}
 
 \section{Qubits}
 
@@ -70,18 +62,12 @@ $$\ket{1}=\left[\begin{array}{c}0 \\ 1\end{array}\right]$$
 Using the previous definitions, we can see a qubit as a unit vector in two-dimensional complex vector space:
 \[\ket{\psi}=\left[\begin{array}{c}\alpha \\ \beta\end{array}\right]\]
 
-\section{Multi-Qubit Systems}
-
-\todo{Explain how multi-qubit systems are represented. Describe what a state vector is.}
-
 \section{Superposition}
 
 The principle of quantum superposition states that the most general state of a quantum-mechanical system is a linear combination of all distinct valid quantum states. A qubit is an example of a quantum superposition of the basis states $\ket{0}$ and $\ket{1}$.
 
 A concrete example of a qubit in superposition that has the same probability of being measured as $\ket{0}$ or $\ket{1}$ is the following:
 $$\ket{\psi}=\frac{1}{\sqrt{2}}\left(\ket{0}+\ket{1}\right)$$
-
-\todo{Expand this section to show multi-qubit superposition.}
 
 \section{Quantum Logic Gates}
 
@@ -102,14 +88,40 @@ $$\bf{U_b}\bf{U_a}\ket{\psi}=\bf{U_b}(\bf{U_a}\ket{\psi})=(\bf{U_b}\bf{U_a})\ket
 Note that all quantum gates are reversible since they are represented by unitary matrices. This means that for any gate, another gate exists that reverts the gate's transformation on a state vector:
 $$\ket{\psi}=\bf{U^{\dagger}}(\bf{U}\ket{\psi})=\bf{U^{\dagger}}\bf{U}\ket{\psi}=\bf{I}\ket{\psi}$$
 
-\todo{Describe and show how gates are represented in graphical circuits.}
-
 \section{Single-Qubit Gates}
 
-Single-qubit gates are represented by $2 \times 2$ matrices.
+Single-qubit gates are represented by $2 \times 2$ unitary matrices. Applying a gate to a matrix can be done by multiplying the gate's matrix by the qubit's state vector.
 
-\todo{List the most commonly used single-qubit gates and show how they transform a qubit.}
+Next, some of the most commonly used gates.
+
+Pauli-X gate:
+$$X=\left[\begin{array}{cc}0 & 1 \\ 1 & 0\end{array}\right]$$
+
+Pauli-Y gate:
+$$Y=\left[\begin{array}{cc}0 & -\imath \\ \imath & 0\end{array}\right]$$
+
+Pauli-Z gate:
+$$Z=\left[\begin{array}{cc}1 & 0 \\ 0 & -1\end{array}\right]$$
+
+Hadamard gate:
+$$H=\frac{1}{\sqrt{2}}\left[\begin{array}{cc}1 & 1 \\ 1 & -1\end{array}\right]$$
+
+RX gate:
+$$R_x(\theta)=\left[\begin{array}{cc}cos{\frac{\theta}{2}} & -\imath sin{\frac{\theta}{2}} \\ -\imath sin{\frac{\theta}{2}} & cos{\frac{\theta}{2}}\end{array}\right]$$
+
+RY gate:
+$$R_y(\theta)=\left[\begin{array}{cc}cos{\frac{\theta}{2}} & -sin{\frac{\theta}{2}} \\ sin{\frac{\theta}{2}} & cos{\frac{\theta}{2}}\end{array}\right]$$
+
+RZ gate:
+$$R_z(\theta)=\left[\begin{array}{cc}e^{-\imath \frac{\theta}{2}} & 0 \\ 0 & e^{\imath \frac{\theta}{2}}\end{array}\right]$$
+
+R1 gate:
+$$R_1(\theta)=\left[\begin{array}{cc}1 & 0 \\ 0 & e^{\imath \theta}\end{array}\right]$$
 
 \section{Multi-Qubit Gates}
 
-\todo{List the most commonly used multi-qubit gates and show how they transform the qubits they act upon.}
+Multi-qubit gates are represented by $2^N \times 2^N$ matrices where N is the number of qubits the gate operates on.
+
+Of special importance is the CNOT gate which is a two-qubit gate where the first qubit is referred to as the control qubit and the second qubit as the target qubit. CNOT acts as a conditional gate, if the control qubit is in state $\ket{1}$, it applies the Pauli X gate to the target qubit, otherwise it does nothing. The main use of this gate is to prepare entangled states.
+
+$$CNOT=\left[\begin{array}{cccc}1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0\end{array}\right]$$
