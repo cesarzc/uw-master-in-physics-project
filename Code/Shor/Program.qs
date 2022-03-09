@@ -50,6 +50,7 @@ namespace Shor {
 
         // Prepare eigenstate register.
         let bitSize = BitSizeI(N);
+        Message($"BitSize: {bitSize}");
         use eigenstateRegister = Qubit[bitSize];
         let eigenstateRegisterLE = LittleEndian(eigenstateRegister);
         ApplyXorInPlace(1, eigenstateRegisterLE);

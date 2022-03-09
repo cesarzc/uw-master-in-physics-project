@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.Parsing;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -44,7 +44,7 @@ namespace ConsoleApp
 
             public int Generator { get; set; }
 
-            public string Resource { get; set; }
+            public string Resource { get; set; } = "CNOT";
         }
 
         class QuantumSubroutineOptions
@@ -95,13 +95,29 @@ namespace ConsoleApp
             simulateCommand.Handler = CommandHandler.Create((SimulateOptions options) => Simulate(options.N));
             rootCommand.Add(simulateCommand);
 
-            // Create track logical operations commnad.
-            var trackLogicalOperationsCommand = new Command("tracklogicalresources");
+            // Create trace program commnad.
+            var traceProgramCommand = new Command("traceprogram");
+            traceProgramCommand.AddOption(CommandOption.N);
+            traceProgramCommand.AddOption(CommandOption.Generator);
+            traceProgramCommand.Handler = CommandHandler.Create((QuantumSubroutineOptions options) => 
+                TraceProgram(options.N, options.Generator));
+            rootCommand.Add(traceProgramCommand);
+
+            // Create track logical operations command.
+            var trackLogicalOperationsCommand = new Command("tracklogicaloperations");
             trackLogicalOperationsCommand.AddOption(CommandOption.N);
             trackLogicalOperationsCommand.AddOption(CommandOption.Generator);
             trackLogicalOperationsCommand.Handler = CommandHandler.Create((QuantumSubroutineOptions options) => 
                 TrackLogicalResources(options.N, options.Generator));
             rootCommand.Add(trackLogicalOperationsCommand);
+
+            // Create track ion resources command.
+            var trackIonResourcesCommand = new Command("trackionresources");
+            trackIonResourcesCommand.AddOption(CommandOption.N);
+            trackIonResourcesCommand.AddOption(CommandOption.Generator);
+            trackIonResourcesCommand.Handler = CommandHandler.Create((QuantumSubroutineOptions options) => 
+                TrackIonResources(options.N, options.Generator));
+            rootCommand.Add(trackIonResourcesCommand);
 
             // Create visualize command.
             var visualizeCommand = new Command("visualize");
@@ -120,7 +136,8 @@ namespace ConsoleApp
         {
             Console.WriteLine($"Calculating logical resources for estimate period with N={N} and generator={generator}...");
             var config = ResourcesEstimator.RecommendedConfig();
-            config.CallStackDepthLimit = 3;
+            // TODO: Pass this as option.
+            config.OptimizeDepth = false;
             var estimator = new ResourcesEstimator(config);
             EstimatePeriodInstance.Run(estimator, N, generator).Wait();
             Console.WriteLine("Simulation ended");
@@ -161,8 +178,10 @@ namespace ConsoleApp
 
             //
             var flameGraphSvgFilePath = Path.Combine(flameGraphDirectoryPath, "FlameGraph.svg");
-            var flameGraphScriptPath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "flamegraph.pl");
+            var executionPath =
+                Assembly.GetEntryAssembly()?.Location ??
+                throw new InvalidOperationException("Cannot get execution path");
+            var flameGraphScriptPath = Path.Combine(executionPath, "flamegraph.pl");
             var flameGraphScriptArgs = $"{flameGraphScriptPath} {flameGraphDataFilePath}";
             var flameGraphScriptProcess = new System.Diagnostics.Process();
             flameGraphScriptProcess.StartInfo = new ProcessStartInfo("perl")
@@ -197,6 +216,7 @@ namespace ConsoleApp
             tracerCoreConfiguration.ThrowOnUnconstrainedMeasurement = false;
             tracerCoreConfiguration.UseDepthCounter = true;
             tracerCoreConfiguration.UseWidthCounter = true;
+            tracerCoreConfiguration.UsePrimitiveOperationsCounter = true;
             var qcTraceSimulator = new QCTraceSimulator(tracerCoreConfiguration);
             EstimatePeriodInstance.Run(qcTraceSimulator, N, generator).Wait();
             Console.WriteLine("Simulation ended");
@@ -229,10 +249,64 @@ namespace ConsoleApp
         static void TrackLogicalResources(int N, int generator)
         {
             Console.WriteLine($"Tracking logical resources for estimate period with N={N} and generator={generator}...");
-            LogicalTracker logicalTracker = new LogicalTracker();
-            EstimatePeriodInstance.Run(logicalTracker, N, generator).Wait();
+            var config = new QCTraceSimulatorConfiguration();
+            config.UseDepthCounter = true;
+            config.UseWidthCounter = true;
+            config.ThrowOnUnconstrainedMeasurement = false;
+            config.TraceGateTimes[PrimitiveOperationsGroups.T] = 1;
+            config.TraceGateTimes[PrimitiveOperationsGroups.QubitClifford] = 1;
+            config.TraceGateTimes[PrimitiveOperationsGroups.CNOT] = 1;
+            config.TraceGateTimes[PrimitiveOperationsGroups.Measure] = 0;
+            config.TraceGateTimes[PrimitiveOperationsGroups.R] = 1;
+            Console.WriteLine("Gate times configuration:");
+            config.TraceGateTimes.ToList().ForEach(item => Console.WriteLine($"{item.Key}: {item.Value}"));
+            
+            var traceSimulator = new QCTraceSimulator(config);
+            EstimatePeriodInstance.Run(traceSimulator, N, generator).Wait();
             Console.WriteLine("Simulation ended");
-            logicalTracker.DisplayStats();
+            double depth = traceSimulator.GetMetric<EstimatePeriodInstance>(MetricsNames.DepthCounter.Depth);
+            double width = traceSimulator.GetMetric<EstimatePeriodInstance>(MetricsNames.WidthCounter.ExtraWidth);
+            Console.WriteLine($"Depth: {depth} logical gates.");
+            Console.WriteLine($"Width: {width} qubits.");
+        }
+
+        static void TrackIonResources(int N, int generator)
+        {
+            Console.WriteLine($"Tracking logical resources for estimate period with N={N} and generator={generator}...");
+            var config = new QCTraceSimulatorConfiguration();
+            config.UseDepthCounter = true;
+            config.UseWidthCounter = true;
+            config.ThrowOnUnconstrainedMeasurement = false;
+
+            // Setting times using the following native gate times:
+            // R: 7.5 microseconds.
+            // XX: 100 microseconds.
+            // M (readout): 400 microseconds.
+            config.TraceGateTimes[PrimitiveOperationsGroups.T] = 7.5; // Implemented using 1 R gate.
+            config.TraceGateTimes[PrimitiveOperationsGroups.QubitClifford] = 7.5; // Implemented using 1 R gate.
+            // 
+            config.TraceGateTimes[PrimitiveOperationsGroups.CNOT] = 122.5; // Implemented using the following sequence: R+XX+R+R.
+            config.TraceGateTimes[PrimitiveOperationsGroups.Measure] = 400;
+            config.TraceGateTimes[PrimitiveOperationsGroups.R] = 7.5;
+            Console.WriteLine("Gate times configuration:");
+            config.TraceGateTimes.ToList().ForEach(item => Console.WriteLine($"{item.Key}: {item.Value}"));
+            
+            var traceSimulator = new QCTraceSimulator(config);
+            EstimatePeriodInstance.Run(traceSimulator, N, generator).Wait();
+            Console.WriteLine("Simulation ended");
+            double depth = traceSimulator.GetMetric<EstimatePeriodInstance>(MetricsNames.DepthCounter.Depth);
+            double width = traceSimulator.GetMetric<EstimatePeriodInstance>(MetricsNames.WidthCounter.ExtraWidth);
+            Console.WriteLine($"Depth: {depth/(1000.0*1000.0)} seconds.");
+            Console.WriteLine($"Width: {width} qubits.");
+        }
+
+        static void TraceProgram(int N, int generator)
+        {
+            Console.WriteLine($"Tracing program for estimate period with N={N} and generator={generator}...");
+            var programTracer = new ProgramTracer();
+            EstimatePeriodInstance.Run(programTracer, N, generator).Wait();
+            Console.WriteLine("Simulation ended");
+            programTracer.DisplayStats();
         }
 
         // TODO: Maybe take depth as a parameter too.
