@@ -83,14 +83,41 @@ Using the results demonstrated by C. J. Ballance et al. \cite{TrappedIonHyperfin
     \end{itemize}
 \end{itemize}
 
+Additionally, we will consider qubit readout (measurement) to be perfomed in 400 $\mu s$\cite{TrappedIonQuantumComputing_2019}.
+
 \section{Resources Estimation Analysis}
 
-\todo{Show (using tables and/or plots) how resources escalate as the size and pattern of the input changes}.
+We customized the trace simulator included in Microsoft's Quantum Development Kit to use specific gate times to calculate the depth of the circuit. More specifically, we used the following gate times configuration (based on the characteristics presented earlier in this chapter):
+\begin{itemize}
+    \item R gate: 7.5 $\mu s$
+    \item T gate: 7.5 $\mu s$
+    \item Clifford gates: 7.5 $\mu s$
+    \item CNOT gate: 122.5 $\mu s$
+    \item Measurement gate (qubit readout): 400 $\mu s$
+\end{itemize}
+
+A sample of an execution of the console application using the $trackionresources$ command is shown in listing \ref{lst:TrackIonResourcesOutput}.
+
+\begin{lstlisting}[label=lst:TrackIonResourcesOutput,caption={Output of tracking Ion platform resources for Shor's algorithm}]
+> dotnet run -- trackionresources -N 15 --generator 11
+Gate times configuration:
+CNOT: 122.5
+Measure: 400
+QubitClifford: 7.5
+R: 7.5
+T: 7.5
+
+Depth: 5.10198 seconds.
+Width: 21 qubits.
+\end{lstlisting}
 
 \section{Analysis of Execution in NISQ Devices}
 
-\todo{Analyze what would be the maximum input size that can be successfully run on a NISQ device based on this platform.}
+Running the tool multiple times and collecting the data it produced, we can see that for a NISQ device we could factorize a 20-bit semiprime integer using 85 quibits. This does not take into account error correction so this might not be realistic since we might not be confident about the computation result.
 
-\section{Analysis of Execution of Algorithm for Input of Specific Size}
-
-\todo{Use a resource estimator to determine the characteristics that a device should have to run the algorithm for a specific input size, and determine what would be the runtime.}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=.35]{images/TrappedIons-NisqRuntime.png}
+    \caption{NISQ Runtime}
+    \label{fig:NisqRuntime}
+\end{figure}
